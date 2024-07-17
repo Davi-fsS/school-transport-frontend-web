@@ -1,7 +1,7 @@
 const toastConfigs = {
     position: "top-right", 
     theme: "colored",
-    autoClose: 5000
+    autoClose: 1000
 };
 
 export default toastConfigs
