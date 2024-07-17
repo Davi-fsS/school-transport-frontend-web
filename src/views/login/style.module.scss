@@ -26,11 +26,32 @@
         .loginContent{
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            align-items: center;
+            gap: 1.5rem;
+            width: 100%;
 
             input{
-                font-size: 1.5rem;
+                font-size: 1.3rem;
+                width: 80%;
+                border: none;
+                border-bottom: 1px solid #090833;
+                outline: none;
+                color: #090833;
             }
+
+            .inputPassword{
+                display: inline-flex;
+                width: 100%;
+                position: relative;
+                justify-content: center;
+
+                .icon{
+                    position: absolute;
+                    right: 60px;
+                    cursor: pointer;
+                }
+            }
+
         }
 
         .button{
@@ -46,6 +67,10 @@
             align-items: center;
             background-color: #C36005;
             color: #fff;
+        }
+
+        .button:hover{
+            cursor: pointer;
         }
     }
 }
