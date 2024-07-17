@@ -11,8 +11,8 @@ function App() {
     <div className="App">
       <Routes>
         <Route path='/school-transport-frontend-web' element={<Login/>}/>
-        <Route path='/homepage' element={<Homepage/>}/>
-        <Route path='/drivers-register' element={<RegisterDriver/>}/>
+        <Route path='/school-transport-frontend-web/homepage' element={<Homepage/>}/>
+        <Route path='/school-transport-frontend-web/drivers-register' element={<RegisterDriver/>}/>
       </Routes>
       <ToastContainer />
     </div>
