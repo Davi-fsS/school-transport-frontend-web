@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const apiUrl = 'http://127.0.0.1:8000';
+const apiUrl = 'https://school-transport-backend-3fec5c45f086.herokuapp.com';
 const _controller = apiUrl + '/user';
 
 export const getUserByEmail = async(email) => {

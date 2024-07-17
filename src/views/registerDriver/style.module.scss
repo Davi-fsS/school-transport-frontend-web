@@ -1,0 +1,22 @@
+.container{
+    width: 80%;
+    background-color: #f1f1ee;
+    border-radius: 1rem;
+    padding: 1rem;
+    margin: 3vh auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2vh;
+
+    .title{
+        margin: 0;
+        font-size: 1.4rem;
+        font-weight: 500;
+    }
+
+    .fieldContainer{        
+        display: flex;
+        flex-direction: column;
+        gap: 2vh;
+    }
+}
