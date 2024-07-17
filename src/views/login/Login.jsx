@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import toastConfigs from "../../utils/toastConfigs";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import { getUserByEmail } from "../../services/userService";
 
 const Login = () => {
 
@@ -15,9 +16,9 @@ const Login = () => {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [passwordVisibility, setPasswordVisibility] = useState("password");
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         if(showPassword){
@@ -40,12 +41,31 @@ const Login = () => {
         setPassword(e.target.value);
     };
 
-    const handleLogin = async(e) => {
-        e.preventDefault();
+    const handleLoginAdmin = async(e) => {
         setLoading(true);
 
+        e.preventDefault();
+        const user = await getUserByEmail(email);
+
+        if(user.status === 200){
+            if(user.data.user_type_id === 1){
+                await handleFirebaseLogin();
+            }
+            else{
+                toast.error("Credencias inválidas", toastConfigs);
+            }
+        }
+        else{
+            toast.error("Credenciais inválidas", toastConfigs);
+        }
+
+        setLoading(false);
+    };
+
+    const handleFirebaseLogin = async() => {
         try{
             const user = await signInWithEmailAndPassword(auth, email, password);
+
             if(user){
                 toast.success("Login realizado com sucesso!", toastConfigs);
                 navigate("/homepage");
@@ -54,8 +74,6 @@ const Login = () => {
         catch(error){
             toast.error("Credenciais inválidas", toastConfigs);
         }
-
-        setLoading(false);
     };
 
     return <div className={styles.pageContainer}>
@@ -75,7 +93,7 @@ const Login = () => {
                     </div>
                 </div>
             </div>
-            <button type="submit" style={!(email && password) ? {opacity: 0.5} : null} className={styles.button} onClick={handleLogin} disabled={!(email && password)}>
+            <button type="submit" style={!(email && password) ? {opacity: 0.5} : null} className={styles.button} onClick={handleLoginAdmin} disabled={!(email && password)}>
                 {
                     loading ? <ReactLoading color="#fff" type="bubbles" width={"40%"} height={"100%"}/> : "Entrar"
                 }
