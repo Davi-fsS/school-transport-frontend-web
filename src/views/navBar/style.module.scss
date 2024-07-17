@@ -1,0 +1,44 @@
+.navBarContainer{
+    background-color: #4169E1;
+    height: 7vh;
+
+    nav{
+        display: flex;
+        justify-content: space-between;
+        text-align: center;
+        height: inherit;
+        align-items: center;
+        padding: 0 5vw;
+
+        .logoContainer{
+            flex: 1;
+            height: inherit;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .navItemsContainer{
+            height: inherit;
+            flex: 5;
+            display: flex;
+            gap: 15vw;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        a{
+            cursor: pointer;
+            padding: .4rem 2rem;
+            border-radius: 1rem;
+            font-size: 1rem;
+            text-decoration: none;
+            color: #000080;
+        }
+
+        a:hover{
+            background-color: #000080;
+            color: #fff;
+        }
+    }
+}

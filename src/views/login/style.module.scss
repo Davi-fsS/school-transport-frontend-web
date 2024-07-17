@@ -1,0 +1,76 @@
+.pageContainer{
+    background-color: #090833;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+
+    .pageContent{
+        background-color: white;
+        width: 40%;
+        height: 30vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border-radius: 1rem;
+        position: relative;
+
+        .title{
+            color: #C36005;
+            font-size: 2rem;
+        }
+
+        .loginContent{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+            width: 100%;
+
+            input{
+                font-size: 1.3rem;
+                width: 80%;
+                border: none;
+                border-bottom: 1px solid #090833;
+                outline: none;
+                color: #090833;
+            }
+
+            .inputPassword{
+                display: inline-flex;
+                width: 100%;
+                position: relative;
+                justify-content: center;
+
+                .icon{
+                    position: absolute;
+                    right: 60px;
+                    cursor: pointer;
+                }
+            }
+
+        }
+
+        .button{
+            margin-top: 1rem;
+            border: none;
+            border-radius: .5rem;
+            width: 10vw;
+            height: 5vh;
+            font-size: 1.3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #C36005;
+            color: #fff;
+        }
+
+        .button:hover{
+            cursor: pointer;
+        }
+    }
+}
