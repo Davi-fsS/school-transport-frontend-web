@@ -14,9 +14,13 @@
         font-weight: 500;
     }
 
-    .fieldContainer{        
+    .userFieldsContainer{        
         display: flex;
         flex-direction: column;
         gap: 2vh;
+
+        h4{
+            margin: 1vh 0 0 0;
+        }
     }
 }
