@@ -48,7 +48,7 @@ const Login = () => {
             const user = await signInWithEmailAndPassword(auth, email, password);
             if(user){
                 toast.success("Login realizado com sucesso!", toastConfigs);
-                navigate("/school-transport-frontend-web/homepage");
+                navigate("/homepage");
             }
         }
         catch(error){
