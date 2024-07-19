@@ -4,6 +4,8 @@ import styles from "./style.module.scss";
 import Row from "../../components/row/Row";
 import Input from "../../components/input/Input";
 import { getAddressInfosByCEP } from "../../services/cepService";
+import { toast } from "react-toastify";
+import toastConfigs from "../../utils/toastConfigs";
 
 const RegisterDriver = () => {
     const [name, setName] = useState("");
@@ -44,6 +46,11 @@ const RegisterDriver = () => {
     };
 
     const handleSearchCEP = async() => {
+        if(cep.length !== 8){
+            toast.error("Digite um CEP válido", toastConfigs);
+            return;
+        }
+        
         const request = await getAddressInfosByCEP(cep);
 
         setStreet(request.logradouro);
