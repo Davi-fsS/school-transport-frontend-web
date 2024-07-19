@@ -110,6 +110,8 @@ const RegisterDriver = () => {
         if(city.length === 0) return;
         
         if(state.length === 0) return;
+
+        return true;
     };
 
     const cleanAllFields = () => {
