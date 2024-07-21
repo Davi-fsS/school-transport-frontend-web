@@ -12,26 +12,30 @@ import { toast } from 'react-toastify';
 const School = () => {
     const [rows, setRows] = useState([]);
     const [options, setOptions] = useState(0);
-    const [reload, setReload] = useState(true);
+    const [reload, setReload] = useState(false);
     const [canEdit, setCanEdit] = useState(false);
     const [canRemove, setCanRemove] = useState(false);
     const [id, setId] = useState(null);
     const [details, setDetails] = useState(null);
 
+    const requestData = async() => {
+        const response = await getAllSchools();
+
+        if(response.status === 200){
+            setRows(response.data);
+        }   
+        else{
+            setRows([]);
+        }
+
+        setReload(false);
+    };
+
     useEffect(() => {
-        const requestData = async() => {
-            const response = await getAllSchools();
+        requestData();
+    }, []);
 
-            if(response.status === 200){
-                setRows(response.data);
-            }   
-            else{
-                setRows([]);
-            }
-
-            setReload(false);
-        };
-
+    useEffect(() => {
         if(reload){
             setTimeout(() => {
                 requestData();
