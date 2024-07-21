@@ -5,7 +5,7 @@ import Homepage from './views/homepage/Homepage';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import RegisterDriver from './views/registerDriver/RegisterDriver';
-import RegisterSchool from './views/registerSchool/RegisterSchool';
+import School from './views/registerSchool/School';
 
 function App() {
   return (
@@ -14,7 +14,7 @@ function App() {
         <Route path='/' element={<Login/>}/>
         <Route path='/homepage' element={<Homepage/>}/>
         <Route path='/drivers-register' element={<RegisterDriver/>}/>
-        <Route path='/school' element={<RegisterSchool/>}/>
+        <Route path='/school' element={<School/>}/>
       </Routes>
       <ToastContainer />
     </div>
