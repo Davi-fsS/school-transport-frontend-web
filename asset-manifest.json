@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/school-transport-frontend-web/static/css/main.210b03dd.css",
-    "main.js": "/school-transport-frontend-web/static/js/main.aa639593.js",
+    "main.js": "/school-transport-frontend-web/static/js/main.74398180.js",
     "static/js/453.997ed766.chunk.js": "/school-transport-frontend-web/static/js/453.997ed766.chunk.js",
     "index.html": "/school-transport-frontend-web/index.html",
     "main.210b03dd.css.map": "/school-transport-frontend-web/static/css/main.210b03dd.css.map",
-    "main.aa639593.js.map": "/school-transport-frontend-web/static/js/main.aa639593.js.map",
+    "main.74398180.js.map": "/school-transport-frontend-web/static/js/main.74398180.js.map",
     "453.997ed766.chunk.js.map": "/school-transport-frontend-web/static/js/453.997ed766.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.210b03dd.css",
-    "static/js/main.aa639593.js"
+    "static/js/main.74398180.js"
   ]
 }
