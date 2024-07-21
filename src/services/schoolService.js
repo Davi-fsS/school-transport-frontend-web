@@ -41,3 +41,16 @@ export const updateSchool = async(body) => {
         return error.response;
     }
 };
+
+export const deleteSchool = async(id) => {
+    const _endpoint = `/delete?school_id=${id}`;
+
+    try{
+        const response  = await axios.delete(_controller + _endpoint);
+
+        return response;
+    }
+    catch(error){
+        return error.response;
+    }
+};
