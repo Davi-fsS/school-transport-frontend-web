@@ -15,3 +15,16 @@ export const getAllSchools = async() => {
         return error.response;
     }
 };
+
+export const createSchool = async(body) => {
+    const _endpoint = "/create";
+
+    try{
+        const response  = await axios.post(_controller + _endpoint, body);
+
+        return response;
+    }
+    catch(error){
+        return error.response;
+    }
+};

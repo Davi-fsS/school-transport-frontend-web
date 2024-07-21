@@ -5,7 +5,7 @@ import Homepage from './views/homepage/Homepage';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import RegisterDriver from './views/registerDriver/RegisterDriver';
-import School from './views/registerSchool/School';
+import School from './views/school/School';
 
 function App() {
   return (
