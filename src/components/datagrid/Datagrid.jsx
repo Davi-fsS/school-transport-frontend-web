@@ -1,20 +1,21 @@
 import { DataGrid } from "@mui/x-data-grid";
 import styles from "./style.module.scss";
+import { Add, Delete, Edit, Replay } from "@mui/icons-material";
 
 const Datagrid = ({title, rows, columns, handleReload, handleClickCell, handleRemove, handleDetails, handleOpenRegister, canEdit, canRemove}) => {
     return <div className={styles.datagridContainer}>
         <div className={styles.datagridContent}>
             <div className={styles.datagridButtons}>
                 <h2 className={styles.title}>{title}</h2>
-                <div>
+                <div className={styles.iconContainer}>
                     {
-                        canRemove && <button className={styles.buttonRemove} onClick={handleRemove}>Remover</button>
+                        canRemove && <Delete className={styles.icon} titleAccess="Remover" onClick={handleRemove}/>
                     }
                     {
-                        canEdit && <button className={styles.buttonEdit} onClick={handleDetails}>Editar</button>
+                        canEdit && <Edit className={styles.icon} titleAccess="Editar" onClick={handleDetails}/>
                     }
-                    <button className={styles.buttonRegister} onClick={handleOpenRegister}>Cadastrar</button>
-                    <button className={styles.buttonReload} onClick={handleReload}>Recarregar</button>
+                    <Add className={styles.icon} titleAccess="Cadastrar" onClick={handleOpenRegister}/>
+                    <Replay className={styles.icon} titleAccess="Recarregar" onClick={handleReload}/>
                 </div>
             </div>
             <DataGrid 

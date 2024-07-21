@@ -8,6 +8,11 @@
     flex-direction: column;
     gap: 2vh;
 
+    .icon{
+        font-size: 1.5rem;
+        cursor: pointer;
+    }
+
     .buttonBack{
         width: 5vw;
     }

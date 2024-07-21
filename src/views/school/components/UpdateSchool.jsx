@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import toastConfigs from "../../../utils/toastConfigs";
 import { getAddressInfosByCEP } from "../../../services/cepService";
 import { createSchool, updateSchool } from "../../../services/schoolService";
+import { ArrowBack } from "@mui/icons-material";
 
 const UpdateSchool = ({detail, handleBackPage, handleBackAndReload}) => {
     const [name, setName] = useState("");
@@ -131,8 +132,8 @@ const UpdateSchool = ({detail, handleBackPage, handleBackAndReload}) => {
     };
 
     return <div className={styles.container}>
-        <button className={styles.buttonBack} onClick={handleBackPage}>voltar</button>
-        <h3 className={styles.title}>Cadastro Escola</h3>
+        <ArrowBack className={styles.icon} titleAccess="Voltar" onClick={handleBackPage}/>
+        <h3 className={styles.title}>Editar Escola</h3>
         <div className={styles.userFieldsContainer}>
             <h4>Dados do Endereço</h4>
             <Row>
