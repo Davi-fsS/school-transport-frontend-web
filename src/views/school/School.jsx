@@ -96,7 +96,7 @@ const School = () => {
         <NavBar optionSelected={3}/>
         {
             options === 0 ?
-            <Datagrid title="Escolas" columns={schoolColumns} rows={rows} openRegister={setOptions} handleRemove={handleRemove} handleDetails={handleDetails} handleOpenRegister={handleOpenRegister} handleClickCell={handleClickCell} canEdit={canEdit} canRemove={canRemove}/>
+            <Datagrid title="Escolas" columns={schoolColumns} rows={rows} openRegister={setOptions} handleRemove={handleRemove} handleDetails={handleDetails} handleOpenRegister={handleOpenRegister} handleClickCell={handleClickCell} handleReload={handleBackAndReload} canEdit={canEdit} canRemove={canRemove}/>
             :
             options === 1 ?
             <RegisterSchool handleBackPage={handleBackToDatagrid} handleBackAndReload={handleBackAndReload}/>

@@ -1,7 +1,7 @@
 import { DataGrid } from "@mui/x-data-grid";
 import styles from "./style.module.scss";
 
-const Datagrid = ({title, rows, columns, handleClickCell, handleRemove, handleDetails, handleOpenRegister, canEdit, canRemove}) => {
+const Datagrid = ({title, rows, columns, handleReload, handleClickCell, handleRemove, handleDetails, handleOpenRegister, canEdit, canRemove}) => {
     return <div className={styles.datagridContainer}>
         <div className={styles.datagridContent}>
             <div className={styles.datagridButtons}>
@@ -14,6 +14,7 @@ const Datagrid = ({title, rows, columns, handleClickCell, handleRemove, handleDe
                         canEdit && <button className={styles.buttonEdit} onClick={handleDetails}>Editar</button>
                     }
                     <button className={styles.buttonRegister} onClick={handleOpenRegister}>Cadastrar</button>
+                    <button className={styles.buttonReload} onClick={handleReload}>Recarregar</button>
                 </div>
             </div>
             <DataGrid 
