@@ -32,7 +32,11 @@ const School = () => {
             setReload(false);
         };
 
-        requestData();
+        if(reload){
+            setTimeout(() => {
+                requestData();
+            }, 1500);
+        }
     }, [reload]);
 
     const handleDetails = async() => {
