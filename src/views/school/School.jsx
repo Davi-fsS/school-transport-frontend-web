@@ -12,7 +12,7 @@ import { toast } from 'react-toastify';
 const School = () => {
     const [rows, setRows] = useState([]);
     const [options, setOptions] = useState(0);
-    const [reload, setReload] = useState(false);
+    const [reload, setReload] = useState(true);
     const [canEdit, setCanEdit] = useState(false);
     const [canRemove, setCanRemove] = useState(false);
     const [id, setId] = useState(null);
