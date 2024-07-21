@@ -29,7 +29,7 @@ const NavBar = ({optionSelected}) => {
             <div className={styles.navItemsContainer}>
                 <a onClick={() => navigate("/homepage")} style={optionSelected === 1 ? {backgroundColor: "#000080", color: "#fff"} : null}>home</a>
                 <a onClick={() => navigate("/drivers-register")} style={optionSelected === 2 ? {backgroundColor: "#000080", color: "#fff"} : null}>cadastro motoristas</a>
-                {/* onClick={() => navigate("/cart")} style={optionSelected === 3 ? {backgroundColor: "#000080", color: "#fff"} : null}>carrinho</a> */}
+                <a onClick={() => navigate("/school")} style={optionSelected === 3 ? {backgroundColor: "#000080", color: "#fff"} : null}>escolas</a>
                 <a onClick={handleExit}>sair</a>
             </div>
         </nav>

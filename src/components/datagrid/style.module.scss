@@ -1,0 +1,38 @@
+.datagridContainer{
+    width: 100%;
+    height: 85vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .datagridContent{
+        width: 90%;
+        height: 90%;
+    
+        .datagridButtons{
+            display: inline-flex;
+            width: 100%;
+            justify-content: space-between;
+            align-items: center;
+            height: 4vh;
+            padding: 2vh 0 1vh 0;
+    
+            .title{
+                margin: 0;
+                font-size: 1.5rem;
+            }
+    
+            .buttonRegister{
+                width: 8vw;
+                height: inherit;
+                border: none;
+                background-color: #87ab69;
+                color: #fff;
+                border-radius: .4rem;
+                font-size: 1.2rem;
+                height: 4vh;
+                cursor: pointer;
+            }
+        }
+    }
+}
