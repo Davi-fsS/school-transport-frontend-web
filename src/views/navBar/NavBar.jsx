@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import styles from "./style.module.scss";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../../firebase/firebase";
+import { Home, Logout, PersonAdd, School } from "@mui/icons-material";
 
 const NavBar = ({optionSelected}) => {
 
@@ -27,10 +28,10 @@ const NavBar = ({optionSelected}) => {
                 logo
             </div>
             <div className={styles.navItemsContainer}>
-                <a onClick={() => navigate("/homepage")} style={optionSelected === 1 ? {backgroundColor: "#000080", color: "#fff"} : null}>home</a>
-                <a onClick={() => navigate("/drivers-register")} style={optionSelected === 2 ? {backgroundColor: "#000080", color: "#fff"} : null}>cadastro motoristas</a>
-                {/* onClick={() => navigate("/cart")} style={optionSelected === 3 ? {backgroundColor: "#000080", color: "#fff"} : null}>carrinho</a> */}
-                <a onClick={handleExit}>sair</a>
+                <Home onClick={() => navigate("/homepage")} className={styles.icon} style={optionSelected === 1 ? {backgroundColor: "#000080", color: "#fff"} : null} titleAccess="Home"/>
+                <PersonAdd onClick={() => navigate("/drivers-register")} className={styles.icon} style={optionSelected === 2 ? {backgroundColor: "#000080", color: "#fff"} : null} titleAccess="Cadastro motoristas"/>
+                <School onClick={() => navigate("/school")} className={styles.icon} style={optionSelected === 3 ? {backgroundColor: "#000080", color: "#fff"} : null} titleAccess="Escolas"/>
+                <Logout onClick={handleExit} className={styles.icon} titleAccess="Sair"/>
             </div>
         </nav>
     </div>

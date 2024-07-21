@@ -9,7 +9,7 @@
         height: inherit;
         align-items: center;
         padding: 0 5vw;
-
+        
         .logoContainer{
             flex: 1;
             height: inherit;
@@ -17,12 +17,12 @@
             align-items: center;
             justify-content: center;
         }
-
+        
         .navItemsContainer{
+            gap: 2rem;
             height: inherit;
             flex: 5;
             display: flex;
-            gap: 15vw;
             align-items: center;
             justify-content: flex-end;
         }
@@ -34,6 +34,17 @@
             font-size: 1rem;
             text-decoration: none;
             color: #000080;
+        }
+
+        .icon{
+            color: #000080;
+            cursor: pointer;
+            border-radius: 1rem;
+            padding: .3rem
+        }
+
+        .icon:hover{
+            transform: scale(1.1);
         }
 
         a:hover{

@@ -1,0 +1,41 @@
+.datagridContainer{
+    width: 100%;
+    height: 85vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .datagridContent{
+        width: 90%;
+        height: 90%;
+    
+        .datagridButtons{
+            display: inline-flex;
+            width: 100%;
+            justify-content: space-between;
+            align-items: center;
+            height: 4vh;
+            padding: 2vh 0 1vh 0;
+    
+            .title{
+                margin: 0;
+                font-size: 1.5rem;
+            }
+    
+            .iconContainer{
+                display: inline-flex;
+                align-items: center;
+                gap: 1rem;
+                border-radius: .5rem;
+                border: 1px solid rgba(224, 224, 224, 1);
+                padding: .5rem;
+
+                .icon{
+                    font-size: 1.6rem;
+                    cursor: pointer;
+                    color: rgba(0, 0, 0, 0.87);
+                }
+            }
+        }
+    }
+}
