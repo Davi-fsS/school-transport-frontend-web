@@ -3,9 +3,10 @@ import { deleteSchool, getAllSchools } from "../../services/schoolService";
 import RegisterDriver from "./components/RegisterDriver";
 import { toast } from "react-toastify";
 import toastConfigs from "../../utils/toastConfigs";
-import { schoolColumns } from "../../utils/columns";
+import { driverColumns, schoolColumns } from "../../utils/columns";
 import NavBar from "../navBar/NavBar";
 import Datagrid from "../../components/datagrid/Datagrid";
+import { deleteDriver, getAllDrivers } from "../../services/userService";
 
 const Driver = () => {
     const [rows, setRows] = useState([]);
@@ -17,7 +18,7 @@ const Driver = () => {
     const [details, setDetails] = useState(null);
 
     const requestData = async() => {
-        const response = await getAllSchools();
+        const response = await getAllDrivers();
 
         if(response.status === 200){
             setRows(response.data);
@@ -55,10 +56,10 @@ const Driver = () => {
     };
 
     const handleRemove = async() => {
-        const response = await deleteSchool(id);
+        const response = await deleteDriver(id);
 
         if(response.status === 200){
-            toast.success("Escola removida com sucesso!", toastConfigs);
+            toast.success("Condutor removido com sucesso!", toastConfigs);
             setCanEdit(false);
             setCanRemove(false);
             setReload(true);
@@ -102,7 +103,7 @@ const Driver = () => {
         <NavBar optionSelected={2}/>
         {
             options === 0 ?
-            <Datagrid title="Motoristas" columns={schoolColumns} rows={rows} openRegister={setOptions} handleRemove={handleRemove} handleDetails={handleDetails} handleOpenRegister={handleOpenRegister} handleClickCell={handleClickCell} handleReload={handleBackAndReload} canEdit={canEdit} canRemove={canRemove}/>
+            <Datagrid title="Motoristas" columns={driverColumns} rows={rows} openRegister={setOptions} handleRemove={handleRemove} handleDetails={handleDetails} handleOpenRegister={handleOpenRegister} handleClickCell={handleClickCell} handleReload={handleBackAndReload} canEdit={canEdit} canRemove={canRemove}/>
             :
             // options === 1 ?
             <RegisterDriver handleBackPage={handleBackToDatagrid} handleBackAndReload={handleBackAndReload}/>
