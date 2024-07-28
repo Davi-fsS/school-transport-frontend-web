@@ -194,7 +194,7 @@ const UpdateDriver = ({detail, handleBackPage, handleBackAndReload}) => {
             handleBackAndReload();
         }
         else{
-            toast.error(response.data, toastConfigs);
+            toast.error(response.data.detail, toastConfigs);
         }
     };
 
