@@ -1,8 +1,15 @@
+import { Search } from "@mui/icons-material";
 import styles from "./style.module.scss";
 
-const Input = ({labelName, placeholder, value, handleOnChange}) => {
+const Input = ({button, placeholder, value, handleOnChange}) => {
     return <div className={styles.inputContainer}>
-        <input placeholder={placeholder} onChange={handleOnChange} value={value}/>
+        <label>{placeholder}</label>
+        <input onChange={handleOnChange} value={value}/>
+        {
+            button ? <button style={button.disabled ? {opacity: .5} : null} onClick={button.action} disabled={button.disabled}>
+                <Search className={styles.icon}/>
+            </button> : null
+        }
     </div>
 };
 
