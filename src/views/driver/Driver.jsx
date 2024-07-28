@@ -6,7 +6,8 @@ import toastConfigs from "../../utils/toastConfigs";
 import { driverColumns, schoolColumns } from "../../utils/columns";
 import NavBar from "../navBar/NavBar";
 import Datagrid from "../../components/datagrid/Datagrid";
-import { deleteDriver, getAllDrivers } from "../../services/userService";
+import { deleteDriver, getAllDrivers, getUserDetails } from "../../services/userService";
+import UpdateDriver from "./components/UpdateDriver";
 
 const Driver = () => {
     const [rows, setRows] = useState([]);
@@ -46,8 +47,17 @@ const Driver = () => {
         const detail = rows.find(r => r.id === id);
 
         if(detail !== undefined){
-            setDetails(detail);
-            setOptions(2);
+            const details = await getUserDetails(detail.id)
+
+            if(details.status === 200){
+                setDetails(details.data);
+                setOptions(2);
+            }
+            else{
+                toast.error("Erro ao buscar os detalhes", toastConfigs);
+                setDetails(null);
+                setOptions(0);    
+            }
         }
         else{
             setDetails(null);
@@ -105,10 +115,10 @@ const Driver = () => {
             options === 0 ?
             <Datagrid title="Motoristas" columns={driverColumns} rows={rows} openRegister={setOptions} handleRemove={handleRemove} handleDetails={handleDetails} handleOpenRegister={handleOpenRegister} handleClickCell={handleClickCell} handleReload={handleBackAndReload} canEdit={canEdit} canRemove={canRemove}/>
             :
-            // options === 1 ?
+            options === 1 ?
             <RegisterDriver handleBackPage={handleBackToDatagrid} handleBackAndReload={handleBackAndReload}/>
-            // :
-            // <UpdateSchool detail={details} handleBackPage={handleBackToDatagrid} handleBackAndReload={handleBackAndReload}/>
+            :
+            <UpdateDriver detail={details} handleBackPage={handleBackToDatagrid} handleBackAndReload={handleBackAndReload}/>
         }
     </> 
 };
