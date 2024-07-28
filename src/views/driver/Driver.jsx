@@ -69,7 +69,7 @@ const Driver = () => {
         const response = await deleteDriver(id);
 
         if(response.status === 200){
-            toast.success("Condutor removido com sucesso!", toastConfigs);
+            toast.success("Motorista removido com sucesso!", toastConfigs);
             setCanEdit(false);
             setCanRemove(false);
             setReload(true);

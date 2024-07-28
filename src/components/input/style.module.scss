@@ -3,20 +3,46 @@
     align-items: center;
     gap: .5rem;
     width: 45%;
+    position: relative;
 
     label{
-        font-size: 1.2rem;
-        color: #000080;
-        flex: .12;
+        font-size: .9rem;
+        background-color: #fff;
+        padding: 0 5px;
+        color: #000;
+        position: absolute;
+        font-weight: 500;
+        top: -10px;
+        left: 10px;
     }
 
     input{
-        border: 1px solid #000080;
+        border: 1px solid rgba(224, 224, 224, 1);
         border-radius: .3rem;
         background: none;
-        padding: .5rem 1em;
+        padding: .8rem 1em;
         flex: 1;
         font-size: 1rem;
         color: #000080;
     }
+    
+    button{
+        height: auto;
+        border: none;
+        background-color: #000080;
+        border-radius: 1.5rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        
+        .icon{
+            color: #fff;
+        }
+    }
+
+    button:hover{
+        transform: scale(1.05);
+    }
+
 }

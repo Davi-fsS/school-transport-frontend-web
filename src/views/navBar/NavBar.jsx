@@ -25,12 +25,12 @@ const NavBar = ({optionSelected}) => {
     return <div className={styles.navBarContainer}>
         <nav>
             <div className={styles.logoContainer}>
-                logo
+                Administração
             </div>
             <div className={styles.navItemsContainer}>
-                <Home onClick={() => navigate("/homepage")} className={styles.icon} style={optionSelected === 1 ? {backgroundColor: "#000080", color: "#fff"} : null} titleAccess="Home"/>
-                <PersonAdd onClick={() => navigate("/driver")} className={styles.icon} style={optionSelected === 2 ? {backgroundColor: "#000080", color: "#fff"} : null} titleAccess="Motoristas"/>
-                <School onClick={() => navigate("/school")} className={styles.icon} style={optionSelected === 3 ? {backgroundColor: "#000080", color: "#fff"} : null} titleAccess="Escolas"/>
+                <Home onClick={() => navigate("/homepage")} className={styles.icon} style={optionSelected === 1 ? {backgroundColor: "#C36005", color: "#fff"} : null} titleAccess="Home"/>
+                <PersonAdd onClick={() => navigate("/driver")} className={styles.icon} style={optionSelected === 2 ? {backgroundColor: "#C36005", color: "#fff"} : null} titleAccess="Cadastro motoristas"/>
+                <School onClick={() => navigate("/school")} className={styles.icon} style={optionSelected === 3 ? {backgroundColor: "#C36005", color: "#fff"} : null} titleAccess="Escolas"/>
                 <Logout onClick={handleExit} className={styles.icon} titleAccess="Sair"/>
             </div>
         </nav>

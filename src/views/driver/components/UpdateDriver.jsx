@@ -189,7 +189,7 @@ const UpdateDriver = ({detail, handleBackPage, handleBackAndReload}) => {
         const response = await updateUser(userBody);
 
         if(response.status === 200){
-            toast.success(response.data, toastConfigs);
+            toast.success("Motorista atualizado com sucesso", toastConfigs);
             cleanAllFields();
             handleBackAndReload();
         }
@@ -198,10 +198,17 @@ const UpdateDriver = ({detail, handleBackPage, handleBackAndReload}) => {
         }
     };
 
+    const buttonCep = {
+        action: () => handleSearchCEP(),
+        disabled: cep.length !== 8
+    };
+
     return <>
         <div className={styles.container}>
-            <ArrowBack className={styles.icon} titleAccess="Voltar" onClick={handleBackPage}/>
-            <h3 className={styles.title}>Cadastro Motorista</h3>
+            <div className={styles.header}>
+                <ArrowBack className={styles.icon} titleAccess="Voltar" onClick={handleBackPage}/>
+                <h3 className={styles.title}>Editar Motorista</h3>
+            </div>
             <div className={styles.userFieldsContainer}>
                 <h4>Dados do Usuário</h4>
                 <Row>
@@ -222,8 +229,7 @@ const UpdateDriver = ({detail, handleBackPage, handleBackAndReload}) => {
                 hasPoint && <div className={styles.userFieldsContainer}>
                     <h4>Dados do Endereço</h4>
                     <Row>
-                        <Input placeholder="CEP" handleOnChange={handleCEP} value={cep}/>
-                        <button onClick={handleSearchCEP}>buscar</button>
+                        <Input button={buttonCep} placeholder="CEP" handleOnChange={handleCEP} value={cep}/>
                         <Input placeholder="Rua" handleOnChange={handleStreet} value={street}/>
                     </Row>      
                     <Row>
