@@ -1,15 +1,16 @@
 import { useState } from "react";
-import NavBar from "../navBar/NavBar";
-import styles from "./style.module.scss";
-import Row from "../../components/row/Row";
-import Input from "../../components/input/Input";
-import { getAddressInfosByCEP } from "../../services/cepService";
+import { getAddressInfosByCEP } from "../../../services/cepService";
 import { toast } from "react-toastify";
-import toastConfigs from "../../utils/toastConfigs";
-import { createUser } from "../../services/userService";
-import { userTypeEnum } from "../../utils/userTypeEnum";
+import toastConfigs from "../../../utils/toastConfigs";
+import { createUser } from "../../../services/userService";
+import { ArrowBack } from "@mui/icons-material";
+import NavBar from "../../navBar/NavBar";
+import Row from "../../../components/row/Row";
+import Input from "../../../components/input/Input";
+import styles from "./style.module.scss";
+import { userTypeEnum } from "../../../utils/userTypeEnum";
 
-const RegisterDriver = () => {
+const RegisterDriver = ({handleBackPage, handleBackAndReload}) => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [cnh, setCNH] = useState("");
@@ -158,6 +159,7 @@ const RegisterDriver = () => {
         if(response.status === 201){
             toast.success(response.data, toastConfigs);
             cleanAllFields();
+            handleBackAndReload();
         }
         else{
             toast.error(response.data, toastConfigs);
@@ -165,10 +167,9 @@ const RegisterDriver = () => {
     };
 
     return <>
-        <NavBar optionSelected={2}/>
         <div className={styles.container}>
+            <ArrowBack className={styles.icon} titleAccess="Voltar" onClick={handleBackPage}/>
             <h3 className={styles.title}>Cadastro Motorista</h3>
-
             <div className={styles.userFieldsContainer}>
                 <h4>Dados do Usuário</h4>
                 <Row>

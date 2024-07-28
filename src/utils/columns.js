@@ -21,4 +21,12 @@ export const schoolColumns = [
             );
         },
     },
-  ];
+];
+
+export const driverColumns = [
+    { field: 'name', headerName: 'Nome', flex: 1},
+    { field: 'email', headerName: 'Email', flex: 1 },
+    { field: 'cnh', headerName: 'CNH', flex: 1 },
+    { field: 'cpf', headerName: 'CPF', flex: 1 },
+    { field: 'rg', headerName: 'RG', flex: 1 },
+];
