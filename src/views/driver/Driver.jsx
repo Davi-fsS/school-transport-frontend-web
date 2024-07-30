@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { deleteSchool, getAllSchools } from "../../services/schoolService";
+import { deleteSchool, getAllSchools } from "../../services/pointService";
 import RegisterDriver from "./components/RegisterDriver";
 import { toast } from "react-toastify";
 import toastConfigs from "../../utils/toastConfigs";

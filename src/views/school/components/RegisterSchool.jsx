@@ -5,8 +5,9 @@ import styles from "./style.module.scss";
 import { toast } from "react-toastify";
 import toastConfigs from "../../../utils/toastConfigs";
 import { getAddressInfosByCEP } from "../../../services/cepService";
-import { createSchool } from "../../../services/schoolService";
+import { createPoint, createSchool } from "../../../services/pointService";
 import { ArrowBack } from "@mui/icons-material";
+import { pointTypeEnum } from "../../../utils/pointTypeEnum";
 
 const RegisterSchool = ({handleBackPage, handleBackAndReload}) => {
     const [name, setName] = useState("");
@@ -105,10 +106,11 @@ const RegisterSchool = ({handleBackPage, handleBackAndReload}) => {
             city: city, 
             neighborhood: neighborhood, 
             state: state,
-            description: description
+            description: description,
+            point_type_id: pointTypeEnum.ESCOLA
         };
         
-        const response = await createSchool(body);
+        const response = await createPoint(body);
 
         if(response.status === 201){
             toast.success("Escola criada com sucesso!", toastConfigs);

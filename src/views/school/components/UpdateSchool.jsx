@@ -5,8 +5,9 @@ import styles from "./style.module.scss";
 import { toast } from "react-toastify";
 import toastConfigs from "../../../utils/toastConfigs";
 import { getAddressInfosByCEP } from "../../../services/cepService";
-import { createSchool, updateSchool } from "../../../services/schoolService";
+import { createSchool, updatePoint, updateSchool } from "../../../services/pointService";
 import { ArrowBack } from "@mui/icons-material";
+import { pointTypeEnum } from "../../../utils/pointTypeEnum";
 
 const UpdateSchool = ({detail, handleBackPage, handleBackAndReload}) => {
     const [name, setName] = useState("");
@@ -116,10 +117,11 @@ const UpdateSchool = ({detail, handleBackPage, handleBackAndReload}) => {
             city: city, 
             neighborhood: neighborhood, 
             state: state,
-            description: description
+            description: description,
+            point_type_id: pointTypeEnum.ESCOLA
         };
         
-        const response = await updateSchool(body);
+        const response = await updatePoint(body);
 
         if(response.status === 200){
             toast.success("Escola atualizada com sucesso!", toastConfigs);

@@ -1,10 +1,10 @@
 import axios from "axios";
 
 const apiUrl = 'https://school-transport-backend-3fec5c45f086.herokuapp.com';
-const _controller = apiUrl + '/school';
+const _controller = apiUrl + '/point';
 
 export const getAllSchools = async() => {
-    const _endpoint = "/get-all-list";
+    const _endpoint = "/get-all-schools-list";
 
     try{
         const response  = await axios.get(_controller + _endpoint);
@@ -16,7 +16,7 @@ export const getAllSchools = async() => {
     }
 };
 
-export const createSchool = async(body) => {
+export const createPoint = async(body) => {
     const _endpoint = "/create";
 
     try{
@@ -29,7 +29,7 @@ export const createSchool = async(body) => {
     }
 };
 
-export const updateSchool = async(body) => {
+export const updatePoint = async(body) => {
     const _endpoint = "/update";
 
     try{
@@ -42,8 +42,8 @@ export const updateSchool = async(body) => {
     }
 };
 
-export const deleteSchool = async(id) => {
-    const _endpoint = `/delete?school_id=${id}`;
+export const deletePoint = async(id) => {
+    const _endpoint = `/delete?point_id=${id}`;
 
     try{
         const response  = await axios.delete(_controller + _endpoint);

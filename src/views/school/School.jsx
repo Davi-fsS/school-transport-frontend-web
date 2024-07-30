@@ -3,7 +3,7 @@ import NavBar from '../navBar/NavBar';
 import Datagrid from '../../components/datagrid/Datagrid';
 import { schoolColumns } from '../../utils/columns';
 import { useEffect, useState } from 'react';
-import { deleteSchool, getAllSchools, removeSchool } from '../../services/schoolService';
+import { deletePoint, getAllSchools } from '../../services/pointService';
 import RegisterSchool from './components/RegisterSchool';
 import UpdateSchool from './components/UpdateSchool';
 import toastConfigs from '../../utils/toastConfigs';
@@ -39,7 +39,7 @@ const School = () => {
         if(reload){
             setTimeout(() => {
                 requestData();
-            }, 1500);
+            }, 1000);
         }
     }, [reload]);
 
@@ -57,7 +57,7 @@ const School = () => {
     };
 
     const handleRemove = async() => {
-        const response = await deleteSchool(id);
+        const response = await deletePoint(id);
 
         if(response.status === 200){
             toast.success("Escola removida com sucesso!", toastConfigs);

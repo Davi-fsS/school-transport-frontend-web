@@ -5,7 +5,7 @@ import styles from "./style.module.scss";
 import { toast } from "react-toastify";
 import toastConfigs from "../../../utils/toastConfigs";
 import { getAddressInfosByCEP } from "../../../services/cepService";
-import { createSchool, updateSchool } from "../../../services/schoolService";
+import { createSchool, updateSchool } from "../../../services/pointService";
 import { ArrowBack } from "@mui/icons-material";
 import { createUser, updateUser } from "../../../services/userService";
 import { userTypeEnum } from "../../../utils/userTypeEnum";
