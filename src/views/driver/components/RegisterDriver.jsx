@@ -4,11 +4,14 @@ import { toast } from "react-toastify";
 import toastConfigs from "../../../utils/toastConfigs";
 import { createUser } from "../../../services/userService";
 import { ArrowBack } from "@mui/icons-material";
-import NavBar from "../../navBar/NavBar";
+import ReactLoading from "react-loading";
 import Row from "../../../components/row/Row";
 import Input from "../../../components/input/Input";
 import styles from "./style.module.scss";
 import { userTypeEnum } from "../../../utils/userTypeEnum";
+import { vehicleTypeEnum } from "../../../utils/vehicleTypeEnum";
+import { createVehicle } from "../../../services/vehicleService";
+import { pointTypeEnum } from "../../../utils/pointTypeEnum";
 
 const RegisterDriver = ({handleBackPage, handleBackAndReload}) => {
     const [name, setName] = useState("");
@@ -24,6 +27,14 @@ const RegisterDriver = ({handleBackPage, handleBackAndReload}) => {
     const [neighborhood, setNeighborhood] = useState("");
     const [city, setCity] = useState("");
     const [state, setState] = useState("");
+
+    const [plate, setPlate] = useState("");
+    const [model, setModel] = useState("");
+    const [color, setColor] = useState("");
+    const [year, setYear] = useState("");
+
+    const [nextPage, setNextPage] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const handleName = (e) => {
         setName(e.target.value);
@@ -87,7 +98,23 @@ const RegisterDriver = ({handleBackPage, handleBackAndReload}) => {
         setState(e.target.value);
     };
 
-    const verifyFieldsFilled = () => {
+    const handlePlate = (e) => {
+        setPlate(e.target.value.toUpperCase());
+    };
+
+    const handleModel = (e) => {
+        setModel(e.target.value);
+    };
+
+    const handleYear = (e) => {
+        setYear(e.target.value);
+    };
+
+    const handleColor = (e) => {
+        setColor(e.target.value);
+    };
+
+    const verifyFirstPageFilledFields = () => {
         if(name.length === 0) return;
 
         if(email.length === 0) return;
@@ -115,6 +142,18 @@ const RegisterDriver = ({handleBackPage, handleBackAndReload}) => {
         return true;
     };
 
+    const verifySecondPageFilledFields = () => {
+        if(plate.length === 0) return;
+
+        if(year.length === 0) return;
+
+        if(color.length === 0) return;
+
+        if(model.length === 0) return;
+
+        return true;
+    };
+
     const cleanAllFields = () => {
         setName("");
         setEmail("");
@@ -130,15 +169,30 @@ const RegisterDriver = ({handleBackPage, handleBackAndReload}) => {
         setState("");
     };
 
-    const handleRegister = async() => {
-        const isAllFilled = verifyFieldsFilled();
+    const handleToNextPage = () => {
+        const isFirstPageFilled = verifyFirstPageFilledFields();
 
-        if(!isAllFilled){
+        if(!isFirstPageFilled){
+            toast.error("Preencha todos os dados corretamente", toastConfigs);
+            setNextPage(false);
+            return;
+        }
+        else{
+            setNextPage(true);
+        }
+    };
+
+    const handleRegister = async() => {
+        setLoading(true);
+
+        const isSecondPageFilled = verifySecondPageFilledFields();
+
+        if(!isSecondPageFilled){
             toast.error("Preencha todos os dados corretamente", toastConfigs);
             return;
         }
 
-        const body = {
+        const userBody = {
             name: name,
             email: email,
             cpf: cpf.replace(/\D/g, ''),
@@ -147,23 +201,44 @@ const RegisterDriver = ({handleBackPage, handleBackAndReload}) => {
             phone: phone.replace(/\D/g, ''),
             user_type_id: userTypeEnum.MOTORISTA,
             address: {
+                name: `Casa de ${name}`,
                 address: `${street}, ${number}`, 
                 city: city, 
                 neighborhood: neighborhood, 
-                state: state
+                state: state,
+                description: `Endereço principal de ${name}`,
+                point_type_id: pointTypeEnum.RESIDÊNCIA
             }
         };
         
-        const response = await createUser(body);
+        const creationUser = await createUser(userBody);
 
-        if(response.status === 201){
-            toast.success(response.data, toastConfigs);
-            cleanAllFields();
-            handleBackAndReload();
+        if(creationUser.status === 201){
+            const vehicleBody = {
+                plate: plate,
+                vehicle_type_id: vehicleTypeEnum.VAN_ESCOLAR,
+                color: color,
+                model: model,
+                year: year,
+                user_id: creationUser.data
+            }
+
+            const creationVehicle = await createVehicle(vehicleBody);
+
+            if(creationVehicle.status === 201){
+                toast.success("Usuário criado com sucesso!", toastConfigs);
+                cleanAllFields();
+                handleBackAndReload();
+            }
+            else{
+                toast.error(creationVehicle.data, toastConfigs);
+            }
         }
         else{
-            toast.error(response.data, toastConfigs);
+            toast.error(creationUser.data, toastConfigs);
         }
+
+        setLoading(false);
     };
 
     const buttonCep = {
@@ -177,39 +252,72 @@ const RegisterDriver = ({handleBackPage, handleBackAndReload}) => {
                 <ArrowBack className={styles.icon} titleAccess="Voltar" onClick={handleBackPage}/>
                 <h3 className={styles.title}>Cadastro Motorista</h3>
             </div>
-            <div className={styles.userFieldsContainer}>
-                <h4>Dados do Usuário</h4>
-                <Row>
-                    <Input placeholder="Nome" handleOnChange={handleName} value={name}/>
-                    <Input placeholder="Email" handleOnChange={handleEmail} value={email}/>
-                </Row>      
-                <Row>
-                    <Input placeholder="CNH" handleOnChange={handleCNH} value={cnh}/>
-                    <Input placeholder="CPF" handleOnChange={handleCPF} value={cpf}/>
-                </Row>    
-                <Row>
-                    <Input placeholder="RG" handleOnChange={handleRG} value={rg}/>
-                    <Input placeholder="Telefone" handleOnChange={handlePhone} value={phone}/>
-                </Row>              
-            </div>
+            {
+                !nextPage ? <>
+                    <div className={styles.userFieldsContainer}>
+                        <h4>Dados do Usuário</h4>
+                        <Row>
+                            <Input placeholder="Nome" handleOnChange={handleName} value={name}/>
+                            <Input placeholder="Email" handleOnChange={handleEmail} value={email}/>
+                        </Row>      
+                        <Row>
+                            <Input placeholder="CNH" handleOnChange={handleCNH} value={cnh}/>
+                            <Input placeholder="CPF" handleOnChange={handleCPF} value={cpf}/>
+                        </Row>    
+                        <Row>
+                            <Input placeholder="RG" handleOnChange={handleRG} value={rg}/>
+                            <Input placeholder="Telefone" handleOnChange={handlePhone} value={phone}/>
+                        </Row>              
+                    </div>
 
-            <div className={styles.userFieldsContainer}>
-                <h4>Dados do Endereço</h4>
-                <Row>
-                    <Input button={buttonCep} placeholder="CEP" handleOnChange={handleCEP} value={cep}/>
-                    <Input placeholder="Rua" handleOnChange={handleStreet} value={street}/>
-                </Row>      
-                <Row>
-                    <Input placeholder="Número" handleOnChange={handleNumber} value={number}/>
-                    <Input placeholder="Bairro" handleOnChange={handleNeighborhood} value={neighborhood}/>
-                </Row>    
-                <Row>
-                    <Input placeholder="Cidade" handleOnChange={handleCity} value={city}/>
-                    <Input placeholder="Estado" handleOnChange={handleState} value={state}/>
-                </Row>     
-            </div>
+                    <div className={styles.userFieldsContainer}>
+                        <h4>Dados do Endereço</h4>
+                        <Row>
+                            <Input button={buttonCep} placeholder="CEP" handleOnChange={handleCEP} value={cep}/>
+                            <Input placeholder="Rua" handleOnChange={handleStreet} value={street}/>
+                        </Row>      
+                        <Row>
+                            <Input placeholder="Número" handleOnChange={handleNumber} value={number}/>
+                            <Input placeholder="Bairro" handleOnChange={handleNeighborhood} value={neighborhood}/>
+                        </Row>    
+                        <Row>
+                            <Input placeholder="Cidade" handleOnChange={handleCity} value={city}/>
+                            <Input placeholder="Estado" handleOnChange={handleState} value={state}/>
+                        </Row>     
+                    </div>
 
-            <button onClick={handleRegister} className={styles.buttonRegister}>Enviar</button>
+                    <button onClick={handleToNextPage} className={styles.buttonRegister}>
+                        Avançar
+                    </button>
+                </>
+                :
+                <>
+                    <div className={styles.userFieldsContainer}>
+                        <h4>Dados do Veículo</h4>
+                        <Row>
+                            <Input placeholder="Placa" handleOnChange={handlePlate} value={plate}/>
+                            <Input placeholder="Modelo" handleOnChange={handleModel} value={model}/>
+                        </Row>      
+                        <Row>
+                            <Input placeholder="Color" handleOnChange={handleColor} value={color}/>
+                            <Input placeholder="Ano" handleOnChange={handleYear} value={year}/>
+                        </Row>   
+                    </div>
+
+                    <button onClick={handleRegister} className={styles.buttonRegister}>
+                        <div className={styles.loadingContainer}>
+                            {
+                                loading ?
+                                    <ReactLoading color="#fff" type="bubbles" className={styles.loadingContent}/> 
+                                :
+                                    "Enviar"
+                            }
+                        </div>
+                    </button>
+                </>
+            }
+            
+
         </div>
     </>
 };

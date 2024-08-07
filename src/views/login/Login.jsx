@@ -92,10 +92,12 @@ const Login = () => {
                     </div>
                 </div>
             </div>
-            <button type="submit" style={!(email && password) ? {opacity: 0.5} : null} className={styles.button} onClick={handleLoginAdmin} disabled={!(email && password)}>
-                {
-                    loading ? <ReactLoading color="#fff" type="bubbles" width={"40%"} height={"100%"}/> : "Entrar"
-                }
+            <button type="submit" style={!(email && password) ? {opacity: 0.5} : null} className={styles.buttonContainer} onClick={handleLoginAdmin} disabled={!(email && password)}>
+                <div className={styles.buttonContent}>
+                    {
+                        loading ? <ReactLoading color="#fff" type="bubbles" className={styles.loading} /> : "Entrar"
+                    }
+                </div>
             </button>
         </div>
     </div>

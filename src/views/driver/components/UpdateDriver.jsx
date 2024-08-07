@@ -8,6 +8,7 @@ import { getAddressInfosByCEP } from "../../../services/cepService";
 import { createSchool, updateSchool } from "../../../services/pointService";
 import { ArrowBack } from "@mui/icons-material";
 import { createUser, updateUser } from "../../../services/userService";
+import ReactLoading from "react-loading";
 import { userTypeEnum } from "../../../utils/userTypeEnum";
 
 const UpdateDriver = ({detail, handleBackPage, handleBackAndReload}) => {
@@ -26,6 +27,8 @@ const UpdateDriver = ({detail, handleBackPage, handleBackAndReload}) => {
     const [neighborhood, setNeighborhood] = useState("");
     const [city, setCity] = useState("");
     const [state, setState] = useState("");
+
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         const user = detail?.user
@@ -135,9 +138,7 @@ const UpdateDriver = ({detail, handleBackPage, handleBackAndReload}) => {
 
         if(phone.length === 0) return;
 
-        if(detail.points?.length > 0){
-            if(cep.length === 0) return;
-    
+        if(detail.points?.length > 0){    
             if(street.length === 0) return;
     
             if(number.length === 0) return;
@@ -186,6 +187,8 @@ const UpdateDriver = ({detail, handleBackPage, handleBackAndReload}) => {
             user_type_id: userTypeEnum.MOTORISTA,
         };
         
+        setLoading(true);
+
         const response = await updateUser(userBody);
 
         if(response.status === 200){
@@ -196,6 +199,8 @@ const UpdateDriver = ({detail, handleBackPage, handleBackAndReload}) => {
         else{
             toast.error(response.data.detail, toastConfigs);
         }
+
+        setLoading(false);
     };
 
     const buttonCep = {
@@ -243,7 +248,16 @@ const UpdateDriver = ({detail, handleBackPage, handleBackAndReload}) => {
                 </div>
             }
 
-            <button onClick={handleUpdate} className={styles.buttonRegister}>Enviar</button>
+            <button onClick={handleUpdate} className={styles.buttonRegister}>
+                <div className={styles.loadingContainer}>
+                    {
+                        loading ?
+                            <ReactLoading color="#fff" type="bubbles" className={styles.loadingContent}/> 
+                        :
+                            "Enviar"
+                    }
+                </div>
+            </button>
         </div>
     </>
 };

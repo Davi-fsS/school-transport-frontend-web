@@ -55,7 +55,7 @@
 
         }
 
-        .button{
+        .buttonContainer{
             margin-top: 1rem;
             border: none;
             border-radius: .5rem;
@@ -68,9 +68,23 @@
             align-items: center;
             background-color: #C36005;
             color: #fff;
+
+            .buttonContent{
+                width: 100%;
+                justify-content: center;
+                display: flex;
+                align-items: center;
+                height: 100%;
+
+                .loading{
+                    display: flex;
+                    width: 40% !important;
+                    height: inherit !important;
+                }
+            }
         }
 
-        .button:hover{
+        .buttonContainer:hover{
             cursor: pointer;
         }
     }
