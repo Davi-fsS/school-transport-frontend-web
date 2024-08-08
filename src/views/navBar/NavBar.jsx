@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import styles from "./style.module.scss";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../../firebase/firebase";
-import { Home, Logout, PersonAdd, School } from "@mui/icons-material";
+import { DirectionsCar, Home, Logout, PersonAdd, School } from "@mui/icons-material";
 
 const NavBar = ({optionSelected}) => {
 
@@ -31,6 +31,7 @@ const NavBar = ({optionSelected}) => {
                 <Home onClick={() => navigate("/homepage")} className={styles.icon} style={optionSelected === 1 ? {backgroundColor: "#C36005", color: "#fff"} : null} titleAccess="Home"/>
                 <PersonAdd onClick={() => navigate("/driver")} className={styles.icon} style={optionSelected === 2 ? {backgroundColor: "#C36005", color: "#fff"} : null} titleAccess="Cadastro motoristas"/>
                 <School onClick={() => navigate("/school")} className={styles.icon} style={optionSelected === 3 ? {backgroundColor: "#C36005", color: "#fff"} : null} titleAccess="Escolas"/>
+                <DirectionsCar onClick={() => navigate("/vehicle")} className={styles.icon} style={optionSelected === 4 ? {backgroundColor: "#C36005", color: "#fff"} : null} titleAccess="Veículos"/>
                 <Logout onClick={handleExit} className={styles.icon} titleAccess="Sair"/>
             </div>
         </nav>

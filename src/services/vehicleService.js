@@ -15,3 +15,16 @@ export const createVehicle = async(body) => {
         return error.response;
     }
 };
+
+export const getAllVehicle = async() => {
+    const _endpoint = `/get-all`;
+
+    try{
+        const response  = await axios.get(_controller + _endpoint);
+
+        return response;
+    }
+    catch(error){
+        return error.response;
+    }
+};

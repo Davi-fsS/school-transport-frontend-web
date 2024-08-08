@@ -23,6 +23,14 @@ export const schoolColumns = [
     },
 ];
 
+export const vehicleColumns = [
+    { field: 'plate', headerName: 'Placa', flex: 1},
+    { field: 'model', headerName: 'Modelo', flex: 1 },
+    { field: 'color', headerName: 'Cor', flex: 1 },
+    { field: 'year', headerName: 'Ano', flex: 1 },
+    { field: 'user_name', headerName: 'Usuário', flex: 1 },
+];
+
 export const driverColumns = [
     { field: 'name', headerName: 'Nome', flex: 1},
     { field: 'email', headerName: 'Email', flex: 1 },
