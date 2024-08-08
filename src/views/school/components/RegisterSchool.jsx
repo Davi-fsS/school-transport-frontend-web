@@ -4,6 +4,7 @@ import Row from "../../../components/row/Row";
 import styles from "./style.module.scss";
 import { toast } from "react-toastify";
 import toastConfigs from "../../../utils/toastConfigs";
+import ReactLoading from "react-loading";
 import { getAddressInfosByCEP } from "../../../services/cepService";
 import { createPoint, createSchool } from "../../../services/pointService";
 import { ArrowBack } from "@mui/icons-material";
@@ -18,6 +19,8 @@ const RegisterSchool = ({handleBackPage, handleBackAndReload}) => {
     const [neighborhood, setNeighborhood] = useState("");
     const [city, setCity] = useState("");
     const [state, setState] = useState("");
+
+    const [loading, setLoading] = useState(false);
 
     const handleName = (e) => {
         setName(e.target.value);
@@ -110,6 +113,8 @@ const RegisterSchool = ({handleBackPage, handleBackAndReload}) => {
             point_type_id: pointTypeEnum.ESCOLA
         };
         
+        setLoading(true);
+
         const response = await createPoint(body);
 
         if(response.status === 201){
@@ -120,6 +125,8 @@ const RegisterSchool = ({handleBackPage, handleBackAndReload}) => {
         else{
             toast.error(response.data, toastConfigs);
         }
+
+        setLoading(false);
     };
 
     const buttonCep = {
@@ -152,7 +159,16 @@ const RegisterSchool = ({handleBackPage, handleBackAndReload}) => {
             </Row>     
         </div>
 
-        <button onClick={handleRegister} className={styles.buttonRegister}>Enviar</button>
+        <button onClick={handleRegister} className={styles.buttonRegister}>
+            <div className={styles.loadingContainer}>
+                {
+                    loading ?
+                        <ReactLoading color="#fff" type="bubbles" className={styles.loadingContent}/> 
+                    :
+                        "Enviar"
+                }
+            </div>
+        </button>
     </div>
 };
 

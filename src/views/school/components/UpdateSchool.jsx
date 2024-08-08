@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import toastConfigs from "../../../utils/toastConfigs";
 import { getAddressInfosByCEP } from "../../../services/cepService";
 import { createSchool, updatePoint, updateSchool } from "../../../services/pointService";
+import ReactLoading from "react-loading";
 import { ArrowBack } from "@mui/icons-material";
 import { pointTypeEnum } from "../../../utils/pointTypeEnum";
 
@@ -18,6 +19,8 @@ const UpdateSchool = ({detail, handleBackPage, handleBackAndReload}) => {
     const [neighborhood, setNeighborhood] = useState("");
     const [city, setCity] = useState("");
     const [state, setState] = useState("");
+
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         const address = detail.address.split(",");
@@ -121,6 +124,8 @@ const UpdateSchool = ({detail, handleBackPage, handleBackAndReload}) => {
             point_type_id: pointTypeEnum.ESCOLA
         };
         
+        setLoading(true);
+
         const response = await updatePoint(body);
 
         if(response.status === 200){
@@ -131,6 +136,8 @@ const UpdateSchool = ({detail, handleBackPage, handleBackAndReload}) => {
         else{
             toast.error(response.data, toastConfigs);
         }
+
+        setLoading(false);
     };
 
     const buttonCep = {
@@ -163,7 +170,16 @@ const UpdateSchool = ({detail, handleBackPage, handleBackAndReload}) => {
             </Row>     
         </div>
 
-        <button onClick={handleUpdate} className={styles.buttonRegister}>Enviar</button>
+        <button onClick={handleUpdate} className={styles.buttonRegister}>
+            <div className={styles.loadingContainer}>
+                {
+                    loading ?
+                        <ReactLoading color="#fff" type="bubbles" className={styles.loadingContent}/> 
+                    :
+                        "Enviar"
+                }
+            </div>
+        </button>
     </div>
 };
 
