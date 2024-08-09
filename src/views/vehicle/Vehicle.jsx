@@ -17,6 +17,7 @@ const Vehicle = () => {
     const [canRemove, setCanRemove] = useState(false);
     const [id, setId] = useState(null);
     const [details, setDetails] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     const requestData = async() => {
         const response = await getAllVehicle();
@@ -29,6 +30,7 @@ const Vehicle = () => {
         }
 
         setReload(false);
+        setLoading(false);
     };
 
     useEffect(() => {
@@ -37,9 +39,7 @@ const Vehicle = () => {
 
     useEffect(() => {
         if(reload){
-            setTimeout(() => {
-                requestData();
-            }, 1000);
+            requestData();
         }
     }, [reload]);
 
@@ -57,6 +57,8 @@ const Vehicle = () => {
     };
 
     const handleRemove = async() => {
+        setLoading(true);
+
         const response = await removeVehicle(id);
 
         if(response.status === 200){
@@ -96,6 +98,7 @@ const Vehicle = () => {
     const handleBackAndReload = () => {
         setOptions(0);
         setReload(true);
+        setLoading(true);
         setCanEdit(false);
         setCanRemove(false);
     };
@@ -107,6 +110,7 @@ const Vehicle = () => {
             options === 0 ?
                 <Datagrid 
                     title="Veículos" 
+                    loading={loading}
                     columns={vehicleColumns} 
                     rows={rows} 
                     openRegister={setOptions} 

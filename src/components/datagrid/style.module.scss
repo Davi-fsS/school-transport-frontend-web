@@ -35,7 +35,24 @@
                     cursor: pointer;
                     color: rgba(0, 0, 0, 0.87);
                 }
+
+                .loadingContainer{
+                    width: 24px;
+                    height: 24px;
+
+                    .loading{
+                        width: inherit !important;
+                        height: inherit !important;
+                    }
+                }
             }
         }
     }
+}
+
+.header{
+    background-color: red;
+    color: 'white';
+    font-weight: 'bold';
+    padding: '8px';
 }

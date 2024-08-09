@@ -17,6 +17,7 @@ const Driver = () => {
     const [canRemove, setCanRemove] = useState(false);
     const [id, setId] = useState(null);
     const [details, setDetails] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     const requestData = async() => {
         const response = await getAllDrivers();
@@ -29,6 +30,7 @@ const Driver = () => {
         }
 
         setReload(false);
+        setLoading(false);
     };
 
     useEffect(() => {
@@ -37,9 +39,7 @@ const Driver = () => {
 
     useEffect(() => {
         if(reload){
-            setTimeout(() => {
-                requestData();
-            }, 1500);
+            requestData();
         }
     }, [reload]);
 
@@ -66,6 +66,8 @@ const Driver = () => {
     };
 
     const handleRemove = async() => {
+        setLoading(true);
+
         const response = await deleteDriver(id);
 
         if(response.status === 200){
@@ -105,6 +107,7 @@ const Driver = () => {
     const handleBackAndReload = () => {
         setOptions(0);
         setReload(true);
+        setLoading(true);
         setCanEdit(false);
         setCanRemove(false);
     };
@@ -113,7 +116,7 @@ const Driver = () => {
         <NavBar optionSelected={2}/>
         {
             options === 0 ?
-            <Datagrid title="Motoristas" columns={driverColumns} rows={rows} openRegister={setOptions} handleRemove={handleRemove} handleDetails={handleDetails} handleOpenRegister={handleOpenRegister} handleClickCell={handleClickCell} handleReload={handleBackAndReload} canEdit={canEdit} canRemove={canRemove}/>
+            <Datagrid title="Motoristas" loading={loading} columns={driverColumns} rows={rows} openRegister={setOptions} handleRemove={handleRemove} handleDetails={handleDetails} handleOpenRegister={handleOpenRegister} handleClickCell={handleClickCell} handleReload={handleBackAndReload} canEdit={canEdit} canRemove={canRemove}/>
             :
             options === 1 ?
             <RegisterDriver handleBackPage={handleBackToDatagrid} handleBackAndReload={handleBackAndReload}/>

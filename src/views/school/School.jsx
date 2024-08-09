@@ -7,6 +7,7 @@ import { deletePoint, getAllSchools } from '../../services/pointService';
 import RegisterSchool from './components/RegisterSchool';
 import UpdateSchool from './components/UpdateSchool';
 import toastConfigs from '../../utils/toastConfigs';
+
 import { toast } from 'react-toastify';
 
 const School = () => {
@@ -17,6 +18,7 @@ const School = () => {
     const [canRemove, setCanRemove] = useState(false);
     const [id, setId] = useState(null);
     const [details, setDetails] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     const requestData = async() => {
         const response = await getAllSchools();
@@ -29,6 +31,7 @@ const School = () => {
         }
 
         setReload(false);
+        setLoading(false);
     };
 
     useEffect(() => {
@@ -37,9 +40,7 @@ const School = () => {
 
     useEffect(() => {
         if(reload){
-            setTimeout(() => {
-                requestData();
-            }, 1000);
+            requestData();
         }
     }, [reload]);
 
@@ -57,6 +58,8 @@ const School = () => {
     };
 
     const handleRemove = async() => {
+        setLoading(true);
+
         const response = await deletePoint(id);
 
         if(response.status === 200){
@@ -94,6 +97,7 @@ const School = () => {
     };
 
     const handleBackAndReload = () => {
+        setLoading(true);
         setOptions(0);
         setReload(true);
         setCanEdit(false);
@@ -104,7 +108,7 @@ const School = () => {
         <NavBar optionSelected={3}/>
         {
             options === 0 ?
-            <Datagrid title="Escolas" columns={schoolColumns} rows={rows} openRegister={setOptions} handleRemove={handleRemove} handleDetails={handleDetails} handleOpenRegister={handleOpenRegister} handleClickCell={handleClickCell} handleReload={handleBackAndReload} canEdit={canEdit} canRemove={canRemove}/>
+            <Datagrid title="Escolas" loading={loading} columns={schoolColumns} rows={rows} openRegister={setOptions} handleRemove={handleRemove} handleDetails={handleDetails} handleOpenRegister={handleOpenRegister} handleClickCell={handleClickCell} handleReload={handleBackAndReload} canEdit={canEdit} canRemove={canRemove}/>
             :
             options === 1 ?
             <RegisterSchool handleBackPage={handleBackToDatagrid} handleBackAndReload={handleBackAndReload}/>
