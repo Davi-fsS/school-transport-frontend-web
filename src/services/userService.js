@@ -29,6 +29,19 @@ export const getAllDrivers = async() => {
     }
 };
 
+export const getDriversWithoutVehicle = async() => {
+    const _endpoint = `/get-drivers-without-vehicle`;
+
+    try{
+        const response  = await axios.get(_controller + _endpoint);
+
+        return response;
+    }
+    catch(error){
+        return error.response;
+    }
+};
+
 export const updateDriver = async(body) => {
     const _endpoint = `/update`;
 
