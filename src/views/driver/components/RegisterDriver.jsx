@@ -33,6 +33,7 @@ const RegisterDriver = ({handleBackPage, handleBackAndReload}) => {
     const [color, setColor] = useState("");
     const [year, setYear] = useState("");
 
+    const [hasVehicle, setHasVehicle] = useState(false);
     const [nextPage, setNextPage] = useState(false);
     const [loading, setLoading] = useState(false);
 
@@ -185,60 +186,104 @@ const RegisterDriver = ({handleBackPage, handleBackAndReload}) => {
     const handleRegister = async() => {
         setLoading(true);
 
-        const isSecondPageFilled = verifySecondPageFilledFields();
+        if(hasVehicle){
+            const isSecondPageFilled = verifySecondPageFilledFields();
 
-        if(!isSecondPageFilled){
-            toast.error("Preencha todos os dados corretamente", toastConfigs);
-            return;
+            if(!isSecondPageFilled){
+                toast.error("Preencha todos os dados corretamente", toastConfigs);
+                setLoading(false);
+                return;
+            }
+
+            const userBody = {
+                name: name,
+                email: email,
+                cpf: cpf.replace(/\D/g, ''),
+                cnh: cnh,
+                rg: rg,
+                phone: phone.replace(/\D/g, ''),
+                user_type_id: userTypeEnum.MOTORISTA,
+                address: {
+                    name: `Casa de ${name}`,
+                    address: `${street}, ${number}`, 
+                    city: city, 
+                    neighborhood: neighborhood, 
+                    state: state,
+                    description: `Endereço principal de ${name}`,
+                    point_type_id: pointTypeEnum.RESIDÊNCIA
+                }
+            };
+            
+            const creationUser = await createUser(userBody);
+
+            if(creationUser.status === 201){
+                const vehicleBody = {
+                    plate: plate,
+                    vehicle_type_id: vehicleTypeEnum.VAN_ESCOLAR,
+                    color: color,
+                    model: model,
+                    year: year,
+                    user_id: creationUser.data
+                }
+
+                const creationVehicle = await createVehicle(vehicleBody);
+
+                if(creationVehicle.status === 201){
+                    toast.success("Usuário criado com sucesso!", toastConfigs);
+                    cleanAllFields();
+                    handleBackAndReload();
+                }
+                else{
+                    toast.error(creationVehicle.data, toastConfigs);
+                }
+            }
+            else{
+                toast.error(creationUser.data, toastConfigs);
+            }
+
+            setLoading(false);
         }
+        else{
+            const isFirstPageFilled = verifyFirstPageFilledFields();
 
-        const userBody = {
-            name: name,
-            email: email,
-            cpf: cpf.replace(/\D/g, ''),
-            cnh: cnh,
-            rg: rg,
-            phone: phone.replace(/\D/g, ''),
-            user_type_id: userTypeEnum.MOTORISTA,
-            address: {
-                name: `Casa de ${name}`,
-                address: `${street}, ${number}`, 
-                city: city, 
-                neighborhood: neighborhood, 
-                state: state,
-                description: `Endereço principal de ${name}`,
-                point_type_id: pointTypeEnum.RESIDÊNCIA
+            if(!isFirstPageFilled){
+                toast.error("Preencha todos os dados corretamente", toastConfigs);
+                setLoading(false);
+                return;
             }
-        };
+
+            const userBody = {
+                name: name,
+                email: email,
+                cpf: cpf.replace(/\D/g, ''),
+                cnh: cnh,
+                rg: rg,
+                phone: phone.replace(/\D/g, ''),
+                user_type_id: userTypeEnum.MOTORISTA,
+                address: {
+                    name: `Casa de ${name}`,
+                    address: `${street}, ${number}`, 
+                    city: city, 
+                    neighborhood: neighborhood, 
+                    state: state,
+                    description: `Endereço principal de ${name}`,
+                    point_type_id: pointTypeEnum.RESIDÊNCIA
+                }
+            };
         
-        const creationUser = await createUser(userBody);
+            const creationUser = await createUser(userBody);
 
-        if(creationUser.status === 201){
-            const vehicleBody = {
-                plate: plate,
-                vehicle_type_id: vehicleTypeEnum.VAN_ESCOLAR,
-                color: color,
-                model: model,
-                year: year,
-                user_id: creationUser.data
-            }
-
-            const creationVehicle = await createVehicle(vehicleBody);
-
-            if(creationVehicle.status === 201){
+            if(creationUser.status === 201){
                 toast.success("Usuário criado com sucesso!", toastConfigs);
                 cleanAllFields();
                 handleBackAndReload();
             }
             else{
-                toast.error(creationVehicle.data, toastConfigs);
+                toast.error(creationUser.data, toastConfigs);
             }
-        }
-        else{
-            toast.error(creationUser.data, toastConfigs);
-        }
 
-        setLoading(false);
+            setLoading(false);
+        }
     };
 
     const buttonCep = {
@@ -286,9 +331,36 @@ const RegisterDriver = ({handleBackPage, handleBackAndReload}) => {
                         </Row>     
                     </div>
 
-                    <button onClick={handleToNextPage} className={styles.buttonRegister}>
-                        Avançar
-                    </button>
+                    <div className={styles.userFieldsContainer}>
+                        <Row>
+                            <div>
+                                <input
+                                    type="checkbox"
+                                    value={hasVehicle}
+                                    onChange={(e) => setHasVehicle(e.target.checked)}
+                                />
+                                <label>Deseja criar um veículo a este usuário?</label>
+                            </div>
+                        </Row>      
+                    </div>
+
+                    {
+                        hasVehicle ? 
+                            <button onClick={handleToNextPage} className={styles.buttonRegister}>
+                                Avançar
+                            </button>
+                        :
+                        <button onClick={handleRegister} className={styles.buttonRegister}>
+                            <div className={styles.loadingContainer}>
+                                {
+                                    loading ?
+                                        <ReactLoading color="#fff" type="bubbles" className={styles.loadingContent}/> 
+                                    :
+                                        "Enviar"
+                                }
+                            </div>
+                        </button>
+                    }
                 </>
                 :
                 <>
