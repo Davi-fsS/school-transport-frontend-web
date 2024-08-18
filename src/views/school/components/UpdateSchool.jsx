@@ -32,6 +32,8 @@ const UpdateSchool = ({detail, handleBackPage, handleBackAndReload}) => {
         setNeighborhood(detail.neighborhood);
         setCity(detail.city);
         setState(detail.state);
+
+        console.log(`${address[0]},${address[1]}`)
     }, [detail]);
 
     const handleName = (e) => {
@@ -116,7 +118,7 @@ const UpdateSchool = ({detail, handleBackPage, handleBackAndReload}) => {
         const body = {
             id: detail.id,
             name: name,
-            address: `${street}, ${number}`, 
+            address: `${street},${number}`, 
             city: city, 
             neighborhood: neighborhood, 
             state: state,
