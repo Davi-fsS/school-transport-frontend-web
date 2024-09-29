@@ -346,7 +346,7 @@ const RegisterDriver = ({handleBackPage, handleBackAndReload}) => {
                 }
             }
             else{
-                toast.error(creationUser.data, toastConfigs);
+                toast.error(creationUser.data.detail, toastConfigs);
             }
 
             setLoading(false);

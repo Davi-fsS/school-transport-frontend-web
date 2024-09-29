@@ -128,8 +128,6 @@ const UpdateDriver = ({detail, handleBackPage, handleBackAndReload}) => {
     const verifyFieldsFilled = () => {
         if(name.length === 0) return "Digite o nome";
 
-        if(email.length === 0) return "Digite o email";
-
         if(cnh.length === 0) return "Digite a CNH";
 
         if(cpf.length === 0) return "Digite o CPF";
@@ -224,7 +222,7 @@ const UpdateDriver = ({detail, handleBackPage, handleBackAndReload}) => {
                 <h4>Dados do Usuário</h4>
                 <Row>
                     <Input placeholder="Nome" handleOnChange={handleName} value={name} required={true}/>
-                    <Input placeholder="Email" handleOnChange={handleEmail} value={email} required={true}/>
+                    <Input placeholder="Email" handleOnChange={handleEmail} value={email} disabled={true}/>
                 </Row>      
                 <Row>
                     <Input placeholder="CNH" handleOnChange={handleCNH} value={cnh} required={true}/>
@@ -240,7 +238,7 @@ const UpdateDriver = ({detail, handleBackPage, handleBackAndReload}) => {
                 hasPoint && <div className={styles.userFieldsContainer}>
                     <h4>Dados do Endereço</h4>
                     <Row>
-                        <Input button={buttonCep} placeholder="CEP" handleOnChange={handleCEP} value={cep} required={true}/>
+                        <Input button={buttonCep} placeholder="CEP" handleOnChange={handleCEP} value={cep}/>
                         <Input placeholder="Rua" handleOnChange={handleStreet} value={street} required={true}/>
                     </Row>      
                     <Row>
