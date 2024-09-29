@@ -1,0 +1,24 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 93vh;
+
+    .content{
+        display: flex;
+        flex-direction: column;
+        height: inherit;
+        justify-content: center;
+        align-items: center;
+        padding-bottom: 10vh;
+
+        h3{
+            font-size: 1.5rem;
+        }
+
+        .logo{
+            width: 50%;
+        }
+    }
+
+}   

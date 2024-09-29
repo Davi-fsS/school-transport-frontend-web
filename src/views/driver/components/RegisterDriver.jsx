@@ -38,6 +38,7 @@ const RegisterDriver = ({handleBackPage, handleBackAndReload}) => {
     const [year, setYear] = useState("");
 
     const [hasVehicle, setHasVehicle] = useState(false);
+    const [veridicy, setVeridicy] = useState(false);
     const [nextPage, setNextPage] = useState(false);
     const [loading, setLoading] = useState(false);
 
@@ -158,6 +159,8 @@ const RegisterDriver = ({handleBackPage, handleBackAndReload}) => {
 
         if(password !== confirmPassword) return "Senhas devem ser iguais";
 
+        if(!veridicy) return "Necessário confirmar veridicidade";
+
         return true;
     };
 
@@ -203,6 +206,8 @@ const RegisterDriver = ({handleBackPage, handleBackAndReload}) => {
             toast.error("Preencha todos os dados corretamente", toastConfigs);
             return;
         }
+
+        setNextPage(true);
     };
 
     const handleRegister = async() => {
@@ -439,6 +444,19 @@ const RegisterDriver = ({handleBackPage, handleBackAndReload}) => {
                             <Input placeholder="Cidade" handleOnChange={handleCity} value={city} required={true}/>
                             <Input placeholder="Estado" handleOnChange={handleState} value={state} required={true}/>
                         </Row>     
+                    </div>
+
+                    <div className={styles.userFieldsContainer}>
+                        <Row>
+                            <div>
+                                <input
+                                    type="checkbox"
+                                    value={veridicy}
+                                    onChange={(e) => setVeridicy(e.target.checked)}
+                                />
+                                <label>Confirma que as informações são verídicas</label>
+                            </div>
+                        </Row>      
                     </div>
 
                     <div className={styles.userFieldsContainer}>

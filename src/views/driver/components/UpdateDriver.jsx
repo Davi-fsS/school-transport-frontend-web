@@ -28,6 +28,7 @@ const UpdateDriver = ({detail, handleBackPage, handleBackAndReload}) => {
     const [city, setCity] = useState("");
     const [state, setState] = useState("");
 
+    const [veridicy, setVeridicy] = useState(false);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
@@ -148,6 +149,7 @@ const UpdateDriver = ({detail, handleBackPage, handleBackAndReload}) => {
             if(state.length === 0) return;
         }
 
+        if(!veridicy) return "Necessário confirmar veridicidade";
 
         return true;
     };
@@ -251,6 +253,19 @@ const UpdateDriver = ({detail, handleBackPage, handleBackAndReload}) => {
                     </Row>     
                 </div>
             }
+
+            <div className={styles.userFieldsContainer}>
+                <Row>
+                    <div>
+                        <input
+                            type="checkbox"
+                            value={veridicy}
+                            onChange={(e) => setVeridicy(e.target.checked)}
+                        />
+                        <label>Confirma que as informações são verídicas</label>
+                    </div>
+                </Row>      
+            </div>
 
             <button onClick={handleUpdate} className={styles.buttonRegister}>
                 <div className={styles.loadingContainer}>
