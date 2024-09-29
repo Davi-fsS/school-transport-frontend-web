@@ -126,17 +126,17 @@ const UpdateDriver = ({detail, handleBackPage, handleBackAndReload}) => {
     };
 
     const verifyFieldsFilled = () => {
-        if(name.length === 0) return;
+        if(name.length === 0) return "Digite o nome";
 
-        if(email.length === 0) return;
+        if(email.length === 0) return "Digite o email";
 
-        if(cnh.length === 0) return;
+        if(cnh.length === 0) return "Digite a CNH";
 
-        if(cpf.length === 0) return;
+        if(cpf.length === 0) return "Digite o CPF";
 
-        if(rg.length === 0) return;
+        if(rg.length === 0) return "Digite o RG";
 
-        if(phone.length === 0) return;
+        if(phone.length === 0) return "Digite o telefone";
 
         if(detail.points?.length > 0){    
             if(street.length === 0) return;
@@ -172,7 +172,13 @@ const UpdateDriver = ({detail, handleBackPage, handleBackAndReload}) => {
     const handleUpdate = async() => {
         const isAllFilled = verifyFieldsFilled();
 
-        if(!isAllFilled){
+        if(isAllFilled !== true){
+            setLoading(false);
+            if(isAllFilled !== undefined){
+                toast.error(isAllFilled, toastConfigs);
+                return;
+            }
+
             toast.error("Preencha todos os dados corretamente", toastConfigs);
             return;
         }
@@ -217,33 +223,33 @@ const UpdateDriver = ({detail, handleBackPage, handleBackAndReload}) => {
             <div className={styles.userFieldsContainer}>
                 <h4>Dados do Usuário</h4>
                 <Row>
-                    <Input placeholder="Nome" handleOnChange={handleName} value={name}/>
-                    <Input placeholder="Email" handleOnChange={handleEmail} value={email}/>
+                    <Input placeholder="Nome" handleOnChange={handleName} value={name} required={true}/>
+                    <Input placeholder="Email" handleOnChange={handleEmail} value={email} required={true}/>
                 </Row>      
                 <Row>
-                    <Input placeholder="CNH" handleOnChange={handleCNH} value={cnh}/>
-                    <Input placeholder="CPF" handleOnChange={handleCPF} value={cpf}/>
+                    <Input placeholder="CNH" handleOnChange={handleCNH} value={cnh} required={true}/>
+                    <Input placeholder="CPF" handleOnChange={handleCPF} value={cpf} required={true}/>
                 </Row>    
                 <Row>
-                    <Input placeholder="RG" handleOnChange={handleRG} value={rg}/>
-                    <Input placeholder="Telefone" handleOnChange={handlePhone} value={phone}/>
-                </Row>              
+                    <Input placeholder="RG" handleOnChange={handleRG} value={rg} required={true}/>
+                    <Input placeholder="Telefone" handleOnChange={handlePhone} value={phone} required={true}/>
+                </Row>           
             </div>
 
             {
                 hasPoint && <div className={styles.userFieldsContainer}>
                     <h4>Dados do Endereço</h4>
                     <Row>
-                        <Input button={buttonCep} placeholder="CEP" handleOnChange={handleCEP} value={cep}/>
-                        <Input placeholder="Rua" handleOnChange={handleStreet} value={street}/>
+                        <Input button={buttonCep} placeholder="CEP" handleOnChange={handleCEP} value={cep} required={true}/>
+                        <Input placeholder="Rua" handleOnChange={handleStreet} value={street} required={true}/>
                     </Row>      
                     <Row>
-                        <Input placeholder="Número" handleOnChange={handleNumber} value={number}/>
-                        <Input placeholder="Bairro" handleOnChange={handleNeighborhood} value={neighborhood}/>
+                        <Input placeholder="Número" handleOnChange={handleNumber} value={number} required={true}/>
+                        <Input placeholder="Bairro" handleOnChange={handleNeighborhood} value={neighborhood} required={true}/>
                     </Row>    
                     <Row>
-                        <Input placeholder="Cidade" handleOnChange={handleCity} value={city}/>
-                        <Input placeholder="Estado" handleOnChange={handleState} value={state}/>
+                        <Input placeholder="Cidade" handleOnChange={handleCity} value={city} required={true}/>
+                        <Input placeholder="Estado" handleOnChange={handleState} value={state} required={true}/>
                     </Row>     
                 </div>
             }

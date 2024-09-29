@@ -2,7 +2,7 @@ import { useState } from "react";
 import { getAddressInfosByCEP } from "../../../services/cepService";
 import { toast } from "react-toastify";
 import toastConfigs from "../../../utils/toastConfigs";
-import { createUser } from "../../../services/userService";
+import { createUser, updateUserUuid } from "../../../services/userService";
 import { ArrowBack } from "@mui/icons-material";
 import ReactLoading from "react-loading";
 import Row from "../../../components/row/Row";
@@ -12,6 +12,8 @@ import { userTypeEnum } from "../../../utils/userTypeEnum";
 import { vehicleTypeEnum } from "../../../utils/vehicleTypeEnum";
 import { createVehicle } from "../../../services/vehicleService";
 import { pointTypeEnum } from "../../../utils/pointTypeEnum";
+import { auth } from "../../../firebase/firebase";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 const RegisterDriver = ({handleBackPage, handleBackAndReload}) => {
     const [name, setName] = useState("");
@@ -21,6 +23,8 @@ const RegisterDriver = ({handleBackPage, handleBackAndReload}) => {
     const [rg, setRG] = useState("");
     const [phone, setPhone] = useState("");
     const [cep, setCep] = useState("");
+    const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
 
     const [street, setStreet] = useState("");
     const [number, setNumber] = useState("");
@@ -59,6 +63,14 @@ const RegisterDriver = ({handleBackPage, handleBackAndReload}) => {
 
     const handlePhone = (e) => {
         setPhone(e.target.value);
+    };
+
+    const handlePassword = (e) => {
+        setPassword(e.target.value);
+    };
+    
+    const handleConfirmPassword = (e) => {
+        setConfirmPassword(e.target.value);
     };
 
     const handleCEP = (e) => {
@@ -116,41 +128,47 @@ const RegisterDriver = ({handleBackPage, handleBackAndReload}) => {
     };
 
     const verifyFirstPageFilledFields = () => {
-        if(name.length === 0) return;
+        if(name.length === 0) return "Digite o nome";
 
-        if(email.length === 0) return;
+        if(email.length === 0) return "Digite o email";
 
-        if(cnh.length === 0) return;
+        if(cnh.length === 0) return "Digite a CNH";
 
-        if(cpf.length === 0) return;
+        if(cpf.length === 0) return "Digite o CPF";
 
-        if(rg.length === 0) return;
+        if(rg.length === 0) return "Digite o RG";
 
-        if(phone.length === 0) return;
+        if(phone.length === 0) return "Digite o telefone";
 
         if(cep.length === 0) return;
 
-        if(street.length === 0) return;
+        if(street.length === 0) return "Digite a rua/avenida";
 
-        if(number.length === 0) return;
+        if(number.length === 0) return "Digite o número";
 
-        if(neighborhood.length === 0) return;
+        if(neighborhood.length === 0) return "Digite o bairro";
 
-        if(city.length === 0) return;
+        if(city.length === 0) return "Digite a cidade";
         
-        if(state.length === 0) return;
+        if(state.length === 0) return "Digite o estado";
+        
+        if(password.length === 0) return "Digite a senha";
+        
+        if(confirmPassword.length === 0) return "Digite a confirmação da senha";
+
+        if(password !== confirmPassword) return "Senhas devem ser iguais";
 
         return true;
     };
 
     const verifySecondPageFilledFields = () => {
-        if(plate.length === 0) return;
+        if(plate.length === 0) return "Digite a placa";
 
-        if(year.length === 0) return;
+        if(year.length === 0) return "Digite o ano";
 
-        if(color.length === 0) return;
+        if(color.length === 0) return "Digite a cor";
 
-        if(model.length === 0) return;
+        if(model.length === 0) return "Digite o modelo";
 
         return true;
     };
@@ -168,18 +186,22 @@ const RegisterDriver = ({handleBackPage, handleBackAndReload}) => {
         setNeighborhood("");
         setCity("");
         setState("");
+        setPassword("");
+        setConfirmPassword("");
     };
 
     const handleToNextPage = () => {
         const isFirstPageFilled = verifyFirstPageFilledFields();
 
-        if(!isFirstPageFilled){
+        if(isFirstPageFilled !== true){
+            setLoading(false);
+            if(isFirstPageFilled !== undefined){
+                toast.error(isFirstPageFilled, toastConfigs);
+                return;
+            }
+
             toast.error("Preencha todos os dados corretamente", toastConfigs);
-            setNextPage(false);
             return;
-        }
-        else{
-            setNextPage(true);
         }
     };
 
@@ -189,9 +211,14 @@ const RegisterDriver = ({handleBackPage, handleBackAndReload}) => {
         if(hasVehicle){
             const isSecondPageFilled = verifySecondPageFilledFields();
 
-            if(!isSecondPageFilled){
-                toast.error("Preencha todos os dados corretamente", toastConfigs);
+            if(isSecondPageFilled !== true){
                 setLoading(false);
+                if(isSecondPageFilled !== undefined){
+                    toast.error(isSecondPageFilled, toastConfigs);
+                    return;
+                }
+    
+                toast.error("Preencha todos os dados corretamente", toastConfigs);
                 return;
             }
 
@@ -246,9 +273,14 @@ const RegisterDriver = ({handleBackPage, handleBackAndReload}) => {
         else{
             const isFirstPageFilled = verifyFirstPageFilledFields();
 
-            if(!isFirstPageFilled){
-                toast.error("Preencha todos os dados corretamente", toastConfigs);
+            if(isFirstPageFilled !== true){
                 setLoading(false);
+                if(isFirstPageFilled !== undefined){
+                    toast.error(isFirstPageFilled, toastConfigs);
+                    return;
+                }
+    
+                toast.error("Preencha todos os dados corretamente", toastConfigs);
                 return;
             }
 
@@ -274,9 +306,44 @@ const RegisterDriver = ({handleBackPage, handleBackAndReload}) => {
             const creationUser = await createUser(userBody);
 
             if(creationUser.status === 201){
-                toast.success("Usuário criado com sucesso!", toastConfigs);
-                cleanAllFields();
-                handleBackAndReload();
+                try{
+                    const firebaseCreateAuth = await createUserWithEmailAndPassword(
+                        auth,
+                        email,
+                        password
+                    );
+
+                    const updateBody = {
+                        user_id: creationUser.data,
+                        uuid: firebaseCreateAuth.user.uid,
+                    };
+
+                    const update = await updateUserUuid(updateBody);
+
+                    if (update.status === 200) {
+                        toast.success("Cadastro realizado com sucesso!", toastConfigs);
+                        setName('');
+                        setCPF('');
+                        setRG('');
+                        setPhone('');
+                        setEmail('');
+                        setStreet('');
+                        setNumber('');
+                        setPassword('');
+                        setConfirmPassword('');
+                        setCity('');
+                        setNeighborhood('');
+                        setState('');
+                        setCep('');
+                        cleanAllFields();
+                        handleBackAndReload();
+                    } else {
+                        toast.error("Erro de Autenticação!", toastConfigs);
+                    }
+                }
+                catch (error){
+                    toast.error("Erro de Autenticação firebase!", toastConfigs);
+                }
             }
             else{
                 toast.error(creationUser.data, toastConfigs);
@@ -302,32 +369,36 @@ const RegisterDriver = ({handleBackPage, handleBackAndReload}) => {
                     <div className={styles.userFieldsContainer}>
                         <h4>Dados do Usuário</h4>
                         <Row>
-                            <Input placeholder="Nome" handleOnChange={handleName} value={name}/>
-                            <Input placeholder="Email" handleOnChange={handleEmail} value={email}/>
+                            <Input placeholder="Nome" handleOnChange={handleName} value={name} required={true}/>
+                            <Input placeholder="Email" handleOnChange={handleEmail} value={email} required={true}/>
                         </Row>      
                         <Row>
-                            <Input placeholder="CNH" handleOnChange={handleCNH} value={cnh}/>
-                            <Input placeholder="CPF" handleOnChange={handleCPF} value={cpf}/>
+                            <Input placeholder="CNH" handleOnChange={handleCNH} value={cnh} required={true}/>
+                            <Input placeholder="CPF" handleOnChange={handleCPF} value={cpf} required={true}/>
                         </Row>    
                         <Row>
-                            <Input placeholder="RG" handleOnChange={handleRG} value={rg}/>
-                            <Input placeholder="Telefone" handleOnChange={handlePhone} value={phone}/>
+                            <Input placeholder="RG" handleOnChange={handleRG} value={rg} required={true}/>
+                            <Input placeholder="Telefone" handleOnChange={handlePhone} value={phone} required={true}/>
+                        </Row>
+                        <Row>
+                            <Input placeholder="Senha" handleOnChange={handlePassword} value={password} required={true}/>
+                            <Input placeholder="Confirme Senha" handleOnChange={handleConfirmPassword} value={confirmPassword} required={true}/>
                         </Row>              
                     </div>
 
                     <div className={styles.userFieldsContainer}>
                         <h4>Dados do Endereço</h4>
                         <Row>
-                            <Input button={buttonCep} placeholder="CEP" handleOnChange={handleCEP} value={cep}/>
-                            <Input placeholder="Rua" handleOnChange={handleStreet} value={street}/>
+                            <Input button={buttonCep} placeholder="CEP" handleOnChange={handleCEP} value={cep} required={true}/>
+                            <Input placeholder="Rua" handleOnChange={handleStreet} value={street} required={true}/>
                         </Row>      
                         <Row>
-                            <Input placeholder="Número" handleOnChange={handleNumber} value={number}/>
-                            <Input placeholder="Bairro" handleOnChange={handleNeighborhood} value={neighborhood}/>
+                            <Input placeholder="Número" handleOnChange={handleNumber} value={number} required={true}/>
+                            <Input placeholder="Bairro" handleOnChange={handleNeighborhood} value={neighborhood} required={true}/>
                         </Row>    
                         <Row>
-                            <Input placeholder="Cidade" handleOnChange={handleCity} value={city}/>
-                            <Input placeholder="Estado" handleOnChange={handleState} value={state}/>
+                            <Input placeholder="Cidade" handleOnChange={handleCity} value={city} required={true}/>
+                            <Input placeholder="Estado" handleOnChange={handleState} value={state} required={true}/>
                         </Row>     
                     </div>
 
@@ -367,12 +438,12 @@ const RegisterDriver = ({handleBackPage, handleBackAndReload}) => {
                     <div className={styles.userFieldsContainer}>
                         <h4>Dados do Veículo</h4>
                         <Row>
-                            <Input placeholder="Placa" handleOnChange={handlePlate} value={plate}/>
-                            <Input placeholder="Modelo" handleOnChange={handleModel} value={model}/>
+                            <Input placeholder="Placa" handleOnChange={handlePlate} value={plate} required={true}/>
+                            <Input placeholder="Modelo" handleOnChange={handleModel} value={model} required={true}/>
                         </Row>      
                         <Row>
-                            <Input placeholder="Color" handleOnChange={handleColor} value={color}/>
-                            <Input placeholder="Ano" handleOnChange={handleYear} value={year}/>
+                            <Input placeholder="Color" handleOnChange={handleColor} value={color} required={true}/>
+                            <Input placeholder="Ano" handleOnChange={handleYear} value={year} required={true}/>
                         </Row>   
                     </div>
 
