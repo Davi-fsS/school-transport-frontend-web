@@ -244,6 +244,45 @@ const RegisterDriver = ({handleBackPage, handleBackAndReload}) => {
             const creationUser = await createUser(userBody);
 
             if(creationUser.status === 201){
+                try{
+                    const firebaseCreateAuth = await createUserWithEmailAndPassword(
+                        auth,
+                        email,
+                        password
+                    );
+
+                    const updateBody = {
+                        user_id: creationUser.data,
+                        uuid: firebaseCreateAuth.user.uid,
+                    };
+
+                    const update = await updateUserUuid(updateBody);
+
+                    if (update.status === 200) {
+                        toast.success("Cadastro realizado com sucesso!", toastConfigs);
+                        setName('');
+                        setCPF('');
+                        setRG('');
+                        setPhone('');
+                        setEmail('');
+                        setStreet('');
+                        setNumber('');
+                        setPassword('');
+                        setConfirmPassword('');
+                        setCity('');
+                        setNeighborhood('');
+                        setState('');
+                        setCep('');
+                        cleanAllFields();
+                        handleBackAndReload();
+                    } else {
+                        toast.error("Erro de Autenticação!", toastConfigs);
+                    }
+                }
+                catch (error){
+                    toast.error("Erro de Autenticação firebase!", toastConfigs);
+                }
+
                 const vehicleBody = {
                     plate: plate,
                     vehicle_type_id: vehicleTypeEnum.VAN_ESCOLAR,

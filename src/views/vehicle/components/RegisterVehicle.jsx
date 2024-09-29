@@ -8,7 +8,7 @@ import ReactLoading from "react-loading";
 import { ArrowBack } from "@mui/icons-material";
 import { createVehicle } from "../../../services/vehicleService";
 import { vehicleTypeEnum } from "../../../utils/vehicleTypeEnum";
-import { getDriversWithoutVehicle } from "../../../services/userService";
+import { getAllDrivers, getDriversWithoutVehicle } from "../../../services/userService";
 
 const RegisterVehicle = ({handleBackPage, handleBackAndReload}) => {
     const [plate, setPlate] = useState("");
@@ -23,7 +23,7 @@ const RegisterVehicle = ({handleBackPage, handleBackAndReload}) => {
 
     useEffect(() => {
         const requestDriverList = async() => {
-            const response = await getDriversWithoutVehicle();
+            const response = await getAllDrivers();
 
             if(response.status === 200){
                 const formatDrivers = response.data.map(item => ({
@@ -58,15 +58,15 @@ const RegisterVehicle = ({handleBackPage, handleBackAndReload}) => {
     };
 
     const verifyFieldsFilled = () => {
-        if(plate.length === 0) return;
+        if(plate.length === 0) return "Digite uma placa";
 
         if(plate.length !== 7) return "Digite uma placa válida";
 
-        if(model.length === 0) return;
+        if(model.length === 0) return "Digite um modelo";
 
-        if(year.length === 0) return;
+        if(year.length === 0) return "Digite um ano";
 
-        if(color.length === 0) return;
+        if(color.length === 0) return "Digite uma cor";
 
         if(driverSelected === null || driverSelected === "") return "Escolha um condutor";
 
@@ -113,7 +113,7 @@ const RegisterVehicle = ({handleBackPage, handleBackAndReload}) => {
             handleBackAndReload();
         }
         else{
-            toast.error(response.data, toastConfigs);
+            toast.error(response.data.detail, toastConfigs);
         }
 
         setLoading(false);
@@ -127,26 +127,27 @@ const RegisterVehicle = ({handleBackPage, handleBackAndReload}) => {
         <div className={styles.userFieldsContainer}>
             <h4>Dados do Veículo</h4>
             <Row>
-                <Input placeholder="Placa" handleOnChange={handlePlate} value={plate}/>
-                <Input placeholder="Modelo" handleOnChange={handleModel} value={model}/>
+                <Input placeholder="Placa" handleOnChange={handlePlate} value={plate} required={true}/>
+                <Input placeholder="Modelo" handleOnChange={handleModel} value={model} required={true}/>
             </Row>  
             <Row>
-                <Input placeholder="Ano" handleOnChange={handleYear} value={year}/>
-                <Input placeholder="Cor" handleOnChange={handleColor} value={color}/>
+                <Input placeholder="Ano" handleOnChange={handleYear} value={year} required={true}/>
+                <Input placeholder="Cor" handleOnChange={handleColor} value={color} required={true}/>
             </Row>
-            <Row>
+            <Row style={{justifyContent: "center", gap: 5}}>
                 Selecione o condutor:
                 <select value={driverSelected} onChange={option => setDriverSelected(option.target.value)}>
                     <option value="">Selecione um condutor</option>
                     {
                         driversList?.map(item => {
-                            return <option value={item.value}>
+                            return <option key={item.value} value={item.value}>
                                 {item.label}
                             </option>;
                         })
                     }
                 </select>
-            </Row>   
+                <span style={{color: "red"}}>*</span>
+            </Row>     
         </div>
 
         <button onClick={handleRegister} className={styles.buttonRegister}>

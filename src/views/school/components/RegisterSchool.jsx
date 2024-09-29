@@ -69,17 +69,21 @@ const RegisterSchool = ({handleBackPage, handleBackAndReload}) => {
     };
 
     const verifyFieldsFilled = () => {
-        if(cep.length === 0) return;
+        if(name.length === 0) return "Digite o nome";
 
-        if(street.length === 0) return;
+        if(description.length === 0) return "Digite a descrição";
 
-        if(number.length === 0) return;
+        if(cep.length === 0) return "Digite o CEP";
 
-        if(neighborhood.length === 0) return;
+        if(street.length === 0) return "Digite a rua/avenida";
 
-        if(city.length === 0) return;
+        if(number.length === 0) return "Digite o número";
+
+        if(neighborhood.length === 0) return "Digite o bairro";
+
+        if(city.length === 0) return "Digite a cidade";
         
-        if(state.length === 0) return;
+        if(state.length === 0) return "Digite o estado";
 
         return true;
     };
@@ -98,7 +102,13 @@ const RegisterSchool = ({handleBackPage, handleBackAndReload}) => {
     const handleRegister = async() => {
         const isAllFilled = verifyFieldsFilled();
 
-        if(!isAllFilled){
+        if(isAllFilled !== true){
+            setLoading(false);
+            if(isAllFilled !== undefined){
+                toast.error(isAllFilled, toastConfigs);
+                return;
+            }
+
             toast.error("Preencha todos os dados corretamente", toastConfigs);
             return;
         }
@@ -123,7 +133,7 @@ const RegisterSchool = ({handleBackPage, handleBackAndReload}) => {
             handleBackAndReload();
         }
         else{
-            toast.error(response.data, toastConfigs);
+            toast.error(response.data.detail, toastConfigs);
         }
 
         setLoading(false);
@@ -142,20 +152,20 @@ const RegisterSchool = ({handleBackPage, handleBackAndReload}) => {
         <div className={styles.userFieldsContainer}>
             <h4>Dados do Endereço</h4>
             <Row>
-                <Input placeholder="Nome" handleOnChange={handleName} value={name}/>
-                <Input placeholder="Descrição" handleOnChange={handleDescription} value={description}/>
+                <Input placeholder="Nome" handleOnChange={handleName} value={name} required={true}/>
+                <Input placeholder="Descrição" handleOnChange={handleDescription} value={description} required={true}/>
             </Row>  
             <Row>
-                <Input button={buttonCep} placeholder="CEP" handleOnChange={handleCEP} value={cep}/>
-                <Input placeholder="Rua" handleOnChange={handleStreet} value={street}/>
+                <Input button={buttonCep} placeholder="CEP" handleOnChange={handleCEP} value={cep} required={true}/>
+                <Input placeholder="Rua" handleOnChange={handleStreet} value={street} required={true}/>
             </Row>      
             <Row>
-                <Input placeholder="Número" handleOnChange={handleNumber} value={number}/>
-                <Input placeholder="Bairro" handleOnChange={handleNeighborhood} value={neighborhood}/>
+                <Input placeholder="Número" handleOnChange={handleNumber} value={number} required={true}/>
+                <Input placeholder="Bairro" handleOnChange={handleNeighborhood} value={neighborhood} required={true}/>
             </Row>    
             <Row>
-                <Input placeholder="Cidade" handleOnChange={handleCity} value={city}/>
-                <Input placeholder="Estado" handleOnChange={handleState} value={state}/>
+                <Input placeholder="Cidade" handleOnChange={handleCity} value={city} required={true}/>
+                <Input placeholder="Estado" handleOnChange={handleState} value={state} required={true}/>
             </Row>     
         </div>
 

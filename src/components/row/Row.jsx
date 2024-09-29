@@ -1,7 +1,7 @@
 import styles from "./style.module.scss";
 
-const Row = ({children}) => {
-    return <div className={styles.rowContainer}>
+const Row = ({children, ...rest}) => {
+    return <div className={styles.rowContainer} {...rest}>
         {children}
     </div>
 };

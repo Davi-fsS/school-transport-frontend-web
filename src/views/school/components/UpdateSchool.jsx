@@ -32,8 +32,6 @@ const UpdateSchool = ({detail, handleBackPage, handleBackAndReload}) => {
         setNeighborhood(detail.neighborhood);
         setCity(detail.city);
         setState(detail.state);
-
-        console.log(`${address[0]},${address[1]}`)
     }, [detail]);
 
     const handleName = (e) => {
@@ -83,15 +81,19 @@ const UpdateSchool = ({detail, handleBackPage, handleBackAndReload}) => {
     };
 
     const verifyFieldsFilled = () => {
-        if(street.length === 0) return;
+        if(name.length === 0) return "Digite o nome";
 
-        if(number.length === 0) return;
+        if(description.length === 0) return "Digite a descrição";
 
-        if(neighborhood.length === 0) return;
+        if(street.length === 0) return "Digite a rua/avenida";
 
-        if(city.length === 0) return;
+        if(number.length === 0) return "Digite o número";
+
+        if(neighborhood.length === 0) return "Digite o bairro";
+
+        if(city.length === 0) return "Digite a cidade";
         
-        if(state.length === 0) return;
+        if(state.length === 0) return "Digite o estado";
 
         return true;
     };
@@ -110,7 +112,13 @@ const UpdateSchool = ({detail, handleBackPage, handleBackAndReload}) => {
     const handleUpdate = async() => {
         const isAllFilled = verifyFieldsFilled();
 
-        if(!isAllFilled){
+        if(isAllFilled !== true){
+            setLoading(false);
+            if(isAllFilled !== undefined){
+                toast.error(isAllFilled, toastConfigs);
+                return;
+            }
+
             toast.error("Preencha todos os dados corretamente", toastConfigs);
             return;
         }
@@ -136,7 +144,7 @@ const UpdateSchool = ({detail, handleBackPage, handleBackAndReload}) => {
             handleBackAndReload();
         }
         else{
-            toast.error(response.data, toastConfigs);
+            toast.error(response.data.detail, toastConfigs);
         }
 
         setLoading(false);
@@ -155,20 +163,20 @@ const UpdateSchool = ({detail, handleBackPage, handleBackAndReload}) => {
         <div className={styles.userFieldsContainer}>
             <h4>Dados do Endereço</h4>
             <Row>
-                <Input placeholder="Nome" handleOnChange={handleName} value={name}/>
-                <Input placeholder="Descrição" handleOnChange={handleDescription} value={description}/>
+                <Input placeholder="Nome" handleOnChange={handleName} value={name} required={true}/>
+                <Input placeholder="Descrição" handleOnChange={handleDescription} value={description} required={true}/>
             </Row>  
             <Row>
                 <Input button={buttonCep} placeholder="CEP" handleOnChange={handleCEP} value={cep}/>
-                <Input placeholder="Rua" handleOnChange={handleStreet} value={street}/>
+                <Input placeholder="Rua" handleOnChange={handleStreet} value={street} required={true}/>
             </Row>      
             <Row>
-                <Input placeholder="Número" handleOnChange={handleNumber} value={number}/>
-                <Input placeholder="Bairro" handleOnChange={handleNeighborhood} value={neighborhood}/>
+                <Input placeholder="Número" handleOnChange={handleNumber} value={number} required={true}/>
+                <Input placeholder="Bairro" handleOnChange={handleNeighborhood} value={neighborhood} required={true}/>
             </Row>    
             <Row>
-                <Input placeholder="Cidade" handleOnChange={handleCity} value={city}/>
-                <Input placeholder="Estado" handleOnChange={handleState} value={state}/>
+                <Input placeholder="Cidade" handleOnChange={handleCity} value={city} required={true}/>
+                <Input placeholder="Estado" handleOnChange={handleState} value={state} required={true}/>
             </Row>     
         </div>
 

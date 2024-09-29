@@ -8,7 +8,7 @@ import ReactLoading from "react-loading";
 import { ArrowBack } from "@mui/icons-material";
 import { updateVehicle } from "../../../services/vehicleService";
 import { vehicleTypeEnum } from "../../../utils/vehicleTypeEnum";
-import { getDriversWithoutVehicle } from "../../../services/userService";
+import { getAllDrivers, getDriversWithoutVehicle } from "../../../services/userService";
 
 const UpdateVehicle = ({detail, handleBackPage, handleBackAndReload}) => {
     const [plate, setPlate] = useState("");
@@ -22,7 +22,7 @@ const UpdateVehicle = ({detail, handleBackPage, handleBackAndReload}) => {
     const [loading, setLoading] = useState(false);
 
     const requestDriverList = async() => {
-        const response = await getDriversWithoutVehicle();
+        const response = await getAllDrivers();
 
         if(response.status === 200){
             const formatDrivers = response.data.map(item => ({
@@ -73,15 +73,15 @@ const UpdateVehicle = ({detail, handleBackPage, handleBackAndReload}) => {
     };
 
     const verifyFieldsFilled = () => {
-        if(plate.length === 0) return;
+        if(plate.length === 0) return "Digite uma placa";
 
         if(plate.length !== 7) return "Digite uma placa válida";
 
-        if(model.length === 0) return;
+        if(model.length === 0) return "Digite um modelo";
 
-        if(year.length === 0) return;
+        if(year.length === 0) return "Digite um ano";
 
-        if(color.length === 0) return;
+        if(color.length === 0) return "Digite uma cor";
 
         if(driverSelected === null || driverSelected === "") return "Escolha um condutor";
 
@@ -129,13 +129,11 @@ const UpdateVehicle = ({detail, handleBackPage, handleBackAndReload}) => {
             handleBackAndReload();
         }
         else{
-            toast.error(response.data, toastConfigs);
+            toast.error(response.data.detail, toastConfigs);
         }
 
         setLoading(false);
     };
-
-    useEffect(() => console.log(driverSelected) , [driverSelected])
 
     return <div className={styles.container}>
         <div className={styles.header}>
@@ -145,14 +143,14 @@ const UpdateVehicle = ({detail, handleBackPage, handleBackAndReload}) => {
         <div className={styles.userFieldsContainer}>
             <h4>Dados do Veículo</h4>
             <Row>
-                <Input placeholder="Placa" handleOnChange={handlePlate} value={plate}/>
-                <Input placeholder="Modelo" handleOnChange={handleModel} value={model}/>
+                <Input placeholder="Placa" handleOnChange={handlePlate} value={plate} required={true}/>
+                <Input placeholder="Modelo" handleOnChange={handleModel} value={model} required={true}/>
             </Row>  
             <Row>
-                <Input placeholder="Ano" handleOnChange={handleYear} value={year}/>
-                <Input placeholder="Cor" handleOnChange={handleColor} value={color}/>
+                <Input placeholder="Ano" handleOnChange={handleYear} value={year} required={true}/>
+                <Input placeholder="Cor" handleOnChange={handleColor} value={color} required={true}/>
             </Row>
-            <Row>
+            <Row style={{justifyContent: "center", gap: 5}}>
                 Selecione o condutor:
                 <select value={driverSelected} onChange={option => setDriverSelected(option.target.value)}>
                     <option value="">Selecione um condutor</option>
@@ -164,6 +162,7 @@ const UpdateVehicle = ({detail, handleBackPage, handleBackAndReload}) => {
                         })
                     }
                 </select>
+                <span style={{color: "red"}}>*</span>
             </Row>   
         </div>
 
