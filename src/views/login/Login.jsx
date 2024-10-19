@@ -5,6 +5,7 @@ import ReactLoading from "react-loading";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase/firebase";
 import { toast } from "react-toastify";
+import logo from "../../assets/image.png";
 import toastConfigs from "../../utils/toastConfigs";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
@@ -81,7 +82,7 @@ const Login = () => {
 
     return <div className={styles.pageContainer}>
         <div className={styles.pageContent}>
-            <h3 className={styles.title}>Login Administrador</h3>
+            <img className={styles.logo} src={logo}/>
             <div className={styles.loginContent}>
                 <input type="text" value={email} placeholder="Email" onChange={handleEmail}/>
                 <div className={styles.inputPassword}>

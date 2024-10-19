@@ -10,14 +10,19 @@
     .pageContent{
         background-color: white;
         width: 40%;
-        height: 30vh;
+        padding: 1rem;
         display: flex;
         flex-direction: column;
+        gap: 2rem;
         justify-content: center;
         align-items: center;
         border-radius: 1rem;
         position: relative;
         padding: 1rem;
+
+        .logo{
+            width: 60%;
+        }
 
         .title{
             color: #C36005;
