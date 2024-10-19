@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import styles from "./style.module.scss";
 import { useNavigate } from "react-router-dom";
 import ReactLoading from "react-loading";
@@ -9,10 +9,13 @@ import toastConfigs from "../../utils/toastConfigs";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { getUserByEmail } from "../../services/userService";
+import { AuthContext } from "../providers/AuthProvider";
 
 const Login = () => {
 
     const navigate = useNavigate();
+
+    const {setUserData} = useContext(AuthContext);
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -49,6 +52,7 @@ const Login = () => {
 
         if(user.status === 200){
             if(user.data.user_type_id === 1){
+                setUserData(user.data);
                 await handleFirebaseLogin();
             }
             else{

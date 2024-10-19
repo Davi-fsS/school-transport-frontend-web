@@ -4,13 +4,15 @@ import Datagrid from '../../components/datagrid/Datagrid';
 import { deviceColumns, schoolColumns } from '../../utils/columns';
 import { useEffect, useState } from 'react';
 import { deletePoint, getAllSchools } from '../../services/pointService';
-import RegisterSchool from './components/RegisterSchool';
-import UpdateSchool from './components/UpdateSchool';
+import RegisterSchool from './components/RegisterDevice';
+import UpdateSchool from './components/UpdateDevice';
 import toastConfigs from '../../utils/toastConfigs';
 
 import { toast } from 'react-toastify';
 import { deleteDevice, getAllDevices } from '../../services/deviceService';
 import moment from 'moment';
+import RegisterDevice from './components/RegisterDevice';
+import UpdateDevice from './components/UpdateDevice';
 
 const Device = () => {
     const [rows, setRows] = useState([]);
@@ -31,8 +33,10 @@ const Device = () => {
                 name: item.name,
                 code: item.code,
                 driver: item.user.name,
+                driverId: item.user.id,
                 creation_date: moment(item.creation_date).format("DD/MM/YY HH:mm")
             }));
+            console.log(responseFormatted)
             setRows(responseFormatted);
         }   
         else{
@@ -120,9 +124,9 @@ const Device = () => {
             <Datagrid title="Dispositivos" loading={loading} columns={deviceColumns} rows={rows} openRegister={setOptions} handleRemove={handleRemove} handleDetails={handleDetails} handleOpenRegister={handleOpenRegister} handleClickCell={handleClickCell} handleReload={handleBackAndReload} canEdit={canEdit} canRemove={canRemove}/>
             :
             options === 1 ?
-            <RegisterSchool handleBackPage={handleBackToDatagrid} handleBackAndReload={handleBackAndReload}/>
+            <RegisterDevice handleBackPage={handleBackToDatagrid} handleBackAndReload={handleBackAndReload}/>
             :
-            <UpdateSchool detail={details} handleBackPage={handleBackToDatagrid} handleBackAndReload={handleBackAndReload}/>
+            <UpdateDevice detail={details} handleBackPage={handleBackToDatagrid} handleBackAndReload={handleBackAndReload}/>
         }
     </> 
 };

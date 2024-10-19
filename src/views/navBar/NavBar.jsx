@@ -2,11 +2,15 @@ import { useNavigate } from "react-router-dom";
 import styles from "./style.module.scss";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../../firebase/firebase";
-import { DeviceHub, DirectionsCar, Home, Logout, PersonAdd, School } from "@mui/icons-material";
+import { AccountCircle, DeviceHub, DirectionsCar, Home, Logout, PersonAdd, School } from "@mui/icons-material";
+import { useContext, useState } from "react";
+import { AuthContext } from "../providers/AuthProvider";
 
 const NavBar = ({optionSelected}) => {
 
     const navigate = useNavigate();
+
+    const {userData} = useContext(AuthContext);
 
     const monitorAuthState = async() => {
         onAuthStateChanged(auth, user => {
@@ -25,7 +29,8 @@ const NavBar = ({optionSelected}) => {
     return <div className={styles.navBarContainer}>
         <nav>
             <div className={styles.logoContainer}>
-                Administração
+                <AccountCircle style={{fontSize: "2rem"}}/>
+                {userData?.name}
             </div>
             <div className={styles.navItemsContainer}>
                 <Home onClick={() => navigate("/homepage")} className={styles.icon} style={optionSelected === 1 ? {backgroundColor: "#C36005", color: "#fff"} : null} titleAccess="Home"/>
