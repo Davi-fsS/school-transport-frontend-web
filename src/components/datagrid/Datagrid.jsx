@@ -17,23 +17,17 @@ const Datagrid = ({title, rows, columns, handleReload, handleClickCell, handleRe
                         canEdit && <Edit className={styles.icon} titleAccess="Editar" onClick={handleDetails}/>
                     }
                     <Add className={styles.icon} titleAccess="Cadastrar" onClick={handleOpenRegister}/>
-                    {
-                        loading ? 
-                            <div className={styles.loadingContainer}>
-                                <ReactLoading className={styles.loading} color="rgba(0, 0, 0, 0.87)" type="spin"/> 
-                            </div>
-                        :
-                        <Replay className={styles.icon} titleAccess="Recarregar" onClick={handleReload}/>
-                    }
+                    <Replay className={styles.icon} titleAccess="Recarregar" onClick={handleReload}/>
                 </div>
             </div>
             <DataGrid 
                 rows={rows} 
                 columns={columns}
                 onCellClick={handleClickCell}
+                loading={loading}
                 sx={{
                     '& .MuiDataGrid-columnHeader': {
-                        backgroundColor: '#D1781C',
+                        backgroundColor: '#BC6C19',
                     },
                     '& .MuiDataGrid-columnHeaderTitle': {
                         color: 'white',
