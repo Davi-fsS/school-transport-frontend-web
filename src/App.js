@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import School from './views/school/School';
 import Driver from './views/driver/Driver';
 import Vehicle from './views/vehicle/Vehicle';
+import Device from './views/device/Device';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path='/driver' element={<Driver/>}/>
         <Route path='/school' element={<School/>}/>
         <Route path='/vehicle' element={<Vehicle/>}/>
+        <Route path='/device' element={<Device/>}/>
       </Routes>
       <ToastContainer />
     </div>

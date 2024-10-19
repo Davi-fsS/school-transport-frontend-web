@@ -23,6 +23,13 @@ export const schoolColumns = [
     },
 ];
 
+export const deviceColumns = [
+    { field: 'name', headerName: 'Nome', flex: 1},
+    { field: 'code', headerName: 'Código', flex: 1 },
+    { field: 'driver', headerName: 'Motorista Associado', flex: 1 },
+    { field: 'creation_date', headerName: 'Data de Criação', flex: 1 }
+];
+
 export const vehicleColumns = [
     { field: 'plate', headerName: 'Placa', flex: 1},
     { field: 'model', headerName: 'Modelo', flex: 1 },
