@@ -33,10 +33,8 @@ const Device = () => {
                 name: item.name,
                 code: item.code,
                 driver: item.user.name,
-                driverId: item.user.id,
-                creation_date: moment(item.creation_date).format("DD/MM/YY HH:mm")
+                driverId: item.user.id
             }));
-            console.log(responseFormatted)
             setRows(responseFormatted);
         }   
         else{

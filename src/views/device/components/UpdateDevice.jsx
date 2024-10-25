@@ -48,8 +48,6 @@ const UpdateDevice = ({detail, handleBackPage, handleBackAndReload}) => {
         setName(detail.name);
         setCode(detail.code);
 
-        console.log(detail)
-
         const actualDriver = {
             value: detail?.driverId,
             label: `${detail?.driverName} (atual)`
